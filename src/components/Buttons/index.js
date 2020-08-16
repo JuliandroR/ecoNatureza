@@ -6,10 +6,10 @@ import { Ionicons } from "@expo/vector-icons";
 export const Button = (props) => {
   const style = StyleSheet.create({
     button: {
-      width: 275,
-      height: 50,
+      width: 320,
+      height: 60,
       borderRadius: 50,
-      marginBottom: 30,
+      marginBottom: 50,
       backgroundColor: props.color,
 
       alignItems: "center",
@@ -53,7 +53,8 @@ export const FlatButton = (props) => {
 export const BackButton = (props) => {
   const style = StyleSheet.create({
     backButtonContainer: {
-      justifyContent: "flex-start"
+      justifyContent: "flex-start",
+      width: 300,
     },
 
     backButton: {
@@ -64,7 +65,7 @@ export const BackButton = (props) => {
   });
   return (
     <TouchableOpacity style={style.backButtonContainer} onPress={props.onPress}>
-      <Ionicons style={style.backButton} name={props.name} size={32} />
+      <Ionicons style={style.backButton} name={props.name} size={40} />
     </TouchableOpacity>
   );
 };

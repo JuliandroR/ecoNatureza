@@ -15,8 +15,8 @@ const Select = (props) => {
       paddingRight: 30, // to ensure the text is never behind the icon
     },
     inputAndroid: {
-      width: 275,
-      height: 50,
+      width: 350,
+      height: 70,
       backgroundColor: "#f7f7f7",
       borderRadius: 50,
       borderColor: "rgba(136, 85, 0, 0.5)",

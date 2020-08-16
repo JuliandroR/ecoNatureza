@@ -7,8 +7,7 @@ import {
   ImageBackground,
   ContainerOpacity,
 } from "../../components/Views";
-import { Image, Text } from "react-native";
-import Logo from "../../components/Logo";
+import  Logo from '../../components/Logo'
 import { Button, FlatButton } from "../../components/Buttons";
 
 const Access = () => {
@@ -16,7 +15,7 @@ const Access = () => {
   return (
     <PageDefault>
       <ImageBackground source={access_background}>
-        <Logo size={200} />
+        <Logo size={280} />
         <ContainerOpacity>
           <Button
             color={"#885500"}

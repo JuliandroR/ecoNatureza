@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import CheckBox from "@react-native-community/checkbox";
 
 const logon_background = require("../../assets/img/logon_background.png");
 const options = [
@@ -15,11 +15,11 @@ import {
 } from "../../components/Views";
 import { BackButton, Button } from "../../components/Buttons";
 import Input from "../../components/Input";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { DataPicker } from "../../components/DataPicker";
-import Select from "../../components/Select";
+
 
 const Logon = () => {
+  const [student, setStudent] = useState();
   const navigation = useNavigation();
   const [bornDate, setBornDate] = useState("");
   return (
@@ -46,7 +46,11 @@ const Logon = () => {
             value={bornDate}
           />
 
-          <Select placeholder={"Aluno do IFMS?"} options={options} />
+          <CheckBox
+            disabled={false}
+            value={student}
+            onValueChange={(newValue) => setStudent(newValue)}
+          />
 
           <Input
             value={""}

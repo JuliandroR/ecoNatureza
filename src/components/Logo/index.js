@@ -9,7 +9,7 @@ const Logo = (props) => {
     image: {
       width: size_value,
       height: size_value,
-      marginBottom: 30,
+      marginBottom: 125,
     },
   });
   return <Image source={logo} style={style.image} />;
