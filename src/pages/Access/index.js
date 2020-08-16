@@ -7,8 +7,9 @@ import {
   ImageBackground,
   ContainerOpacity,
 } from "../../components/Views";
-import  Logo from '../../components/Logo'
+import Logo from "../../components/Logo";
 import { Button, FlatButton } from "../../components/Buttons";
+import { View } from "react-native";
 
 const Access = () => {
   const navigation = useNavigation();
@@ -17,14 +18,16 @@ const Access = () => {
       <ImageBackground source={access_background}>
         <Logo size={280} />
         <ContainerOpacity>
-          <Button
-            color={"#885500"}
-            onPress={() => {
-              navigation.navigate("Login");
-            }}
-            text={"Entrar"}
-          />
-          <Button color={"#B0AC3A"} onPress={() => {}} text={"Explorar"} />
+          <View>
+            <Button
+              color={"#885500"}
+              onPress={() => {
+                navigation.navigate("Login");
+              }}
+              text={"Entrar"}
+            />
+            <Button color={"#B0AC3A"} onPress={() => {}} text={"Explorar"} />
+          </View>
           <FlatButton
             onPress={() => {
               navigation.navigate("Logon");

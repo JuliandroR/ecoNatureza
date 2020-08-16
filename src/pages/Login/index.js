@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 const login_background = require("../../assets/img/login_background.png");
@@ -14,6 +14,9 @@ import Input from "../../components/Input";
 
 const Login = () => {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+
   return (
     <PageDefault>
       <ImageBackground source={login_background}>
@@ -26,15 +29,15 @@ const Login = () => {
             name={"ios-arrow-back"}
           />
           <Input
-            value={""}
-            onChange={() => {}}
+            value={email}
+            onChange={(e) => {setEmail(e)}}
             placeholder={"Digite seu E-mail"}
             isPassword={false}
           />
 
           <Input
-            value={""}
-            onChange={() => {}}
+            value={pass}
+            onChange={(e) => {setPass(e)}}
             placeholder={"Digite sua Senha"}
             isPassword={true}
           />

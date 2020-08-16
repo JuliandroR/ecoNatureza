@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import CheckBox from "@react-native-community/checkbox";
 
 const logon_background = require("../../assets/img/logon_background.png");
 const options = [
@@ -16,12 +15,15 @@ import {
 import { BackButton, Button } from "../../components/Buttons";
 import Input from "../../components/Input";
 import { DataPicker } from "../../components/DataPicker";
-
+import Checkbox from "../../components/Checkbox";
 
 const Logon = () => {
-  const [student, setStudent] = useState();
   const navigation = useNavigation();
-  const [bornDate, setBornDate] = useState("");
+  const [name, setName] = useState();
+  const [bornDate, setBornDate] = useState();
+  const [email, setEmail] = useState();
+  const [pass, setPass] = useState();
+  const [student, setStudent] = useState();
   return (
     <PageDefault>
       <ImageBackground source={logon_background}>
@@ -33,8 +35,10 @@ const Logon = () => {
             name={"ios-arrow-back"}
           />
           <Input
-            value={""}
-            onChange={() => {}}
+            value={name}
+            onChange={(e) => {
+              setName(e);
+            }}
             placeholder={"Digite seu Nome"}
             isPassword={false}
           />
@@ -46,24 +50,26 @@ const Logon = () => {
             value={bornDate}
           />
 
-          <CheckBox
-            disabled={false}
-            value={student}
-            onValueChange={(newValue) => setStudent(newValue)}
-          />
-
           <Input
-            value={""}
-            onChage={() => {}}
+            value={email}
+            onChage={(e) => {
+              setEmail(e);
+            }}
             placeholder={"Digite seu e-mail"}
             isPassword={false}
           />
 
           <Input
-            value={""}
-            onChage={() => {}}
+            value={pass}
+            onChage={(e) => {setPass(e)}}
             placeholder={"Digite sua senha"}
             isPassword={true}
+          />
+
+          <Checkbox
+            text="Aluno do IFMS?"
+            value={student}
+            onValueChange={setStudent}
           />
 
           <Button onPress={() => {}} color={"#885500"} text="Entrar" />

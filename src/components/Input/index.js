@@ -23,7 +23,7 @@ const Input = (props) => {
       placeholderTextColor="rgba(136, 85, 0, 0.5)"
       value={props.value}
       onChange={props.onChange}
-      caretHidden={props.isPassword}
+      secureTextEntry={props.isPassword}
       style={style.input}
     />
   );
