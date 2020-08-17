@@ -4,14 +4,14 @@ export const PageDefault = styled.View`
   flex: 1;
   justify-content: flex-end;
   align-items: center;
-  background-color: #303437;
+  background-color: #f7f7f7;
 `;
 
 export const ImageBackground = styled.ImageBackground`
-  padding-top: 100px;
+  padding-top: 75px;
   flex: 1;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 `;
 

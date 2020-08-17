@@ -26,7 +26,9 @@ const Access = () => {
               }}
               text={"Entrar"}
             />
-            <Button color={"#B0AC3A"} onPress={() => {}} text={"Explorar"} />
+            <Button color={"#B0AC3A"} onPress={() => {
+              navigation.navigate("Explore");
+            }} text={"Explorar"} />
           </View>
           <FlatButton
             onPress={() => {
