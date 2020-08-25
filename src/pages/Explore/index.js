@@ -4,6 +4,7 @@ import { View, Image, Text, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { styles } from "./styles";
 import NumberInfo from "../../components/NumberInfo";
+import TitleApp from "../../components/TitleApp";
 
 const explore_background = require("../../assets/img/explore_background.png");
 const logo_image = require("../../assets/img/logo.png");
@@ -18,7 +19,7 @@ const Explore = () => {
         <View style={styles.containerHeader}>
           <View style={styles.container}>
             <Image style={styles.logo} source={logo_image} />
-            <Text style={styles.titleApp}>Eco Cerrado</Text>
+            <TitleApp />
             <TouchableOpacity onPress={() => {}}>
               <Entypo name="menu" size={40} color="#885500" />
             </TouchableOpacity>

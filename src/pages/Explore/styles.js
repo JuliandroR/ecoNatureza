@@ -21,12 +21,6 @@ export const styles = StyleSheet.create({
         height: 60,
     },
 
-    titleApp: {
-        fontSize: 24,
-        color: "#885500",
-        fontWeight: "bold"
-    },
-
     buttonOption: {
         width: "90%",
         height: 160,

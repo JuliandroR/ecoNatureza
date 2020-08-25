@@ -42,7 +42,9 @@ const Login = () => {
             isPassword={true}
           />
 
-          <Button onPress={() => {}} color={"#885500"} text="Entrar" />
+          <Button onPress={() => {
+            navigation.navigate("Profile");
+          }} color={"#885500"} text="Entrar" />
 
           <FlatButton
             onPress={() => {

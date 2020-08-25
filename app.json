@@ -8,7 +8,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#885500"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,6 +21,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "description": "V-1",
+    "githubUrl": "https://github.com/juliandror/econatureza",
+    "android": {
+      "package": "com.juliandrorocha.ecocerrado"
     }
   }
 }

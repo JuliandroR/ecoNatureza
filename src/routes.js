@@ -6,6 +6,7 @@ import Access from "./pages/Access";
 import Login from "./pages/Login";
 import Logon from "./pages/Logon";
 import Explore from "./pages/Explore";
+import Profile from "./pages/Profile";
 
 const AppStack = createStackNavigator();
 
@@ -17,6 +18,7 @@ export default function Routes() {
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Logon" component={Logon} />
         <AppStack.Screen name="Explore" component={Explore} />
+        <AppStack.Screen name="Profile" component={Profile} />
       </AppStack.Navigator>
     </NavigationContainer>
   );
