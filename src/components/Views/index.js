@@ -25,3 +25,12 @@ export const ContainerOpacity = styled.View`
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 `;
+
+export const SpaceBetween = styled.View`
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+`;
