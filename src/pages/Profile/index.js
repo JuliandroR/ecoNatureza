@@ -1,6 +1,6 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, Image, Text, SafeAreaView, ScrollView } from "react-native";
-
 import {
   PageDefault,
   ImageBackground,
@@ -20,6 +20,7 @@ const default_register_image_2 = require("../../assets/background_image_2.jpg");
 const default_register_image_3 = require("../../assets/background_image_3.jpg");
 
 const Profile = () => {
+  const navigation = useNavigation();
   return (
     <PageDefault>
       <ImageBackground source={explore_background}>
@@ -43,7 +44,9 @@ const Profile = () => {
               scientificName="Harbores Bhonitas"
               dropFunction={() => {}}
               numberLikes="99"
-              viewFunction={() => {}}
+              viewFunction={() => {
+                navigation.navigate("ViewRegister")
+              }}
             />
 
             <Register
