@@ -45,7 +45,7 @@ const Profile = () => {
               dropFunction={() => {}}
               numberLikes="99"
               viewFunction={() => {
-                navigation.navigate("ViewRegister")
+                navigation.navigate("ViewRegister", {image: default_register_image})
               }}
             />
 
@@ -55,7 +55,9 @@ const Profile = () => {
               scientificName="Harbores Bhonitas"
               dropFunction={() => {}}
               numberLikes="99"
-              viewFunction={() => {}}
+              viewFunction={() => {
+                navigation.navigate("ViewRegister", {image: default_register_image_2})
+              }}
             />
 
             <Register
@@ -64,7 +66,9 @@ const Profile = () => {
               scientificName="Harbores Bhonitas"
               dropFunction={() => {}}
               numberLikes="99"
-              viewFunction={() => {}}
+              viewFunction={() => {
+                navigation.navigate("ViewRegister", {image: default_register_image_3})
+              }}
             />
           </ScrollView>
         </SafeAreaView>

@@ -9,12 +9,14 @@ export const styles = StyleSheet.create({
   content: {
     justifyContent: "center",
     alignItems: "center",
+    paddingBottom: 50,
   },
 
   image: {
-    width: 250,
-    height: 340,
+    width: 350,
+    height: 350,
     marginBottom: 20,
+    borderRadius: 10,
   },
 
   title: {
@@ -44,6 +46,8 @@ export const styles = StyleSheet.create({
 
   container: {
       width: "95%",
+      justifyContent: "center",
+      alignItems: "center",
   },
 
   text: {
@@ -51,5 +55,20 @@ export const styles = StyleSheet.create({
     color: "#885500",
     fontSize: 14,
     textAlign: "left",
+  },
+
+  mapStyle: {
+    width: 350,
+    height: 250,
+  },
+  
+  viewButtons: {
+    width: "70%",
+    marginTop: 50,
+  },
+
+  numberLike: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
