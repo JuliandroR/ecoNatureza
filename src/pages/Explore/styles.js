@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 export const styles = StyleSheet.create({
     containerHeader: {
@@ -23,12 +23,12 @@ export const styles = StyleSheet.create({
 
     buttonOption: {
         width: "90%",
-        height: 160,
+        height: PixelRatio.getPixelSizeForLayoutSize(70),
         borderRadius: 10,
         borderColor: "#885500",
         borderWidth: 1,
         overflow: "hidden",
-        marginBottom: 40,
+        marginBottom: 30,
     },
 
     imageButton: {

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 export const styles = StyleSheet.create({
   scroll: {
@@ -9,13 +9,13 @@ export const styles = StyleSheet.create({
   content: {
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 50,
+    paddingBottom: PixelRatio.getPixelSizeForLayoutSize(50),
   },
 
   image: {
-    width: 350,
-    height: 350,
-    marginBottom: 20,
+    width: PixelRatio.getPixelSizeForLayoutSize(150),
+    height: PixelRatio.getPixelSizeForLayoutSize(150),
+    marginBottom: PixelRatio.getPixelSizeForLayoutSize(20),
     borderRadius: 10,
   },
 

@@ -5,6 +5,7 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
+  PixelRatio
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Input from "../Input";
@@ -12,8 +13,8 @@ import Input from "../Input";
 export const DataPicker = (props) => {
   const style = StyleSheet.create({
     input: {
-      width: 320,
-      height: 60,
+      width: PixelRatio.getPixelSizeForLayoutSize(130),
+      height: PixelRatio.getPixelSizeForLayoutSize(25),
       backgroundColor: "#f7f7f7",
       borderRadius: 50,
       borderColor: "rgba(136, 85, 0, 0.5)",

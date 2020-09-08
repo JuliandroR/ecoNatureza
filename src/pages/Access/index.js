@@ -9,15 +9,21 @@ import {
 } from "../../components/Views";
 import Logo from "../../components/Logo";
 import { Button, FlatButton } from "../../components/Buttons";
-import { View } from "react-native";
+import { View, StyleSheet, PixelRatio } from "react-native";
+
+const styles = StyleSheet.create({
+  ContainerOpacity: {
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(60)
+  },
+})
 
 const Access = () => {
   const navigation = useNavigation();
   return (
     <PageDefault>
       <ImageBackground source={access_background}>
-        <Logo size={280} />
-        <ContainerOpacity>
+        <Logo size={110} />
+        <ContainerOpacity style={styles.ContainerOpacity}>
           <View>
             <Button
               color={"#885500"}

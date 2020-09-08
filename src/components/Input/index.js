@@ -1,11 +1,11 @@
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { TextInput, StyleSheet, PixelRatio } from "react-native";
 
 const Input = (props) => {
   const style = StyleSheet.create({
     input: {
-      width: 320,
-      height: 60,
+      width: PixelRatio.getPixelSizeForLayoutSize(130),
+      height: PixelRatio.getPixelSizeForLayoutSize(25),
       backgroundColor: "#f7f7f7",
       borderRadius: 50,
       borderColor: "rgba(136, 85, 0, 0.5)",

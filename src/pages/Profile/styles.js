@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 
 export const styles = StyleSheet.create({
 
   profilePhoto: {
-    width: 100,
-    height: 100,
+    width: PixelRatio.getPixelSizeForLayoutSize(50),
+    height: PixelRatio.getPixelSizeForLayoutSize(50),
   },
 
   profileName: {

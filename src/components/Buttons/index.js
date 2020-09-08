@@ -1,15 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, StyleSheet, Text, PixelRatio, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export const Button = (props) => {
   const style = StyleSheet.create({
     button: {
-      width: 320,
-      height: 60,
+      width: PixelRatio.getPixelSizeForLayoutSize(130),
+      height: PixelRatio.getPixelSizeForLayoutSize(25),
       borderRadius: 50,
-      marginBottom: 50,
+      marginBottom: 30,
       backgroundColor: props.color,
 
       alignItems: "center",
@@ -54,7 +53,7 @@ export const BackButton = (props) => {
   const style = StyleSheet.create({
     backButtonContainer: {
       justifyContent: "flex-start",
-      width: 300,
+      width: PixelRatio.getPixelSizeForLayoutSize(150),
     },
 
     backButton: {
