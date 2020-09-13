@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, PixelRatio } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 
 const Select = (props) => {
@@ -15,8 +15,8 @@ const Select = (props) => {
       paddingRight: 30, // to ensure the text is never behind the icon
     },
     inputAndroid: {
-      width: 350,
-      height: 70,
+      width: PixelRatio.getPixelSizeForLayoutSize(130),
+      height: PixelRatio.getPixelSizeForLayoutSize(25),
       backgroundColor: "#f7f7f7",
       borderRadius: 50,
       borderColor: "rgba(136, 85, 0, 0.5)",
@@ -34,6 +34,7 @@ const Select = (props) => {
         value: null,
         color: "#885500",
       }}
+      placeholderColor="#885500"
       onValueChange={(value) => console.log(value)}
       items={props.options}
       useNativeAndroidPickerStyle={false}

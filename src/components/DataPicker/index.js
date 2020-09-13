@@ -56,7 +56,7 @@ export const DataPicker = (props) => {
       <View>
         <TouchableOpacity onPress={showDatepicker}>
           <TextInput
-            placeholder={"Data de Nascimento"}
+            placeholder={props.placeholder}
             placeholderTextColor="rgba(136, 85, 0, 0.5)"
             value={props.value}
             style={style.input}

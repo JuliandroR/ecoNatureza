@@ -2,25 +2,24 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-import styled from "styled-components/native";
 import TitleApp from "../TitleApp";
 
-const Container = styled.View`
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
+import { useNavigation } from "@react-navigation/native";
+import { SpaceBetween } from "../Views";
 
 const HeaderMenu = () => {
+  const navigation = useNavigation();
   return (
-    <Container>
-      <TitleApp />
-      <TouchableOpacity onPress={() => {}}>
+    <SpaceBetween>
+      <TitleApp title="Eco Cerrado" />
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("NewRegister");
+        }}
+      >
         <Feather name="menu" size={40} color="#885500" />
       </TouchableOpacity>
-    </Container>
+    </SpaceBetween>
   );
 };
 

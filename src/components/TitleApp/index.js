@@ -7,9 +7,8 @@ const Title = styled.Text`
   font-weight: bold;
 `;
 
-const TitleApp = () => {
-  return <Title>Eco Cerrado</Title>;
+const TitleApp = (props) => {
+  return <Title style={props.style}>{props.title}</Title>;
 };
 
-
-export default TitleApp
+export default TitleApp;

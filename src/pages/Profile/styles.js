@@ -5,6 +5,8 @@ export const styles = StyleSheet.create({
   profilePhoto: {
     width: PixelRatio.getPixelSizeForLayoutSize(50),
     height: PixelRatio.getPixelSizeForLayoutSize(50),
+    borderRadius: PixelRatio.getPixelSizeForLayoutSize(50),
+    borderRadius: 50,
   },
 
   profileName: {

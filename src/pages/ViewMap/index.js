@@ -1,11 +1,13 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import { PageDefault } from "../../components/Views";
 import { styles } from "./styles";
+import TitleApp from "../../components/TitleApp";
+import NumberInfo from "../../components/NumberInfo";
 
 // import { Container } from './styles';
 const default_register_image_2 = require("../../assets/background_image_2.jpg");
@@ -34,6 +36,7 @@ const ViewMap = () => {
   const navigation = useNavigation();
   return (
     <PageDefault>
+
       <MapView
         style={styles.map}
         loadingEnabled={true}

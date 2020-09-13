@@ -1,4 +1,5 @@
 import styled from "styled-components/native";
+import { SafeAreaView } from "react-native";
 
 export const PageDefault = styled.View`
   flex: 1;
@@ -33,4 +34,9 @@ export const SpaceBetween = styled.View`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+`;
+
+export const SafeArea = styled.SafeAreaView`
+  flex: 1;
+  padding-top: 20;
 `;

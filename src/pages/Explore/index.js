@@ -1,6 +1,6 @@
 import React from "react";
-import { PageDefault, ImageBackground } from "../../components/Views";
-import { View, Image, Text, TouchableOpacity } from "react-native";
+import { PageDefault, ImageBackground, SafeArea } from "../../components/Views";
+import { View, Image, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { styles } from "./styles";
 import NumberInfo from "../../components/NumberInfo";
@@ -31,33 +31,37 @@ const Explore = () => {
             <NumberInfo title="projetos" value="99" />
           </View>
         </View>
-        
-        <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
-          <ImageBackground
-            style={styles.imageButton}
-            source={projects_background}
-          >
-            <Text style={styles.textButton}>Projetos</Text>
-          </ImageBackground>
-        </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
-          <ImageBackground
-            style={styles.imageButton}
-            source={especies_background}
-          >
-            <Text style={styles.textButton}>Espécies</Text>
-          </ImageBackground>
-        </TouchableOpacity>
+        <SafeArea>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
+              <ImageBackground
+                style={styles.imageButton}
+                source={projects_background}
+              >
+                <Text style={styles.textButton}>Projetos</Text>
+              </ImageBackground>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
-          <ImageBackground
-            style={styles.imageButton}
-            source={comunidade_background}
-          >
-            <Text style={styles.textButton}>Comunidade</Text>
-          </ImageBackground>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
+              <ImageBackground
+                style={styles.imageButton}
+                source={especies_background}
+              >
+                <Text style={styles.textButton}>Espécies</Text>
+              </ImageBackground>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
+              <ImageBackground
+                style={styles.imageButton}
+                source={comunidade_background}
+              >
+                <Text style={styles.textButton}>Comunidade</Text>
+              </ImageBackground>
+            </TouchableOpacity>
+          </ScrollView>
+        </SafeArea>
       </ImageBackground>
     </PageDefault>
   );

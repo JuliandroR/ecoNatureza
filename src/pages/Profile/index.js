@@ -5,6 +5,7 @@ import {
   PageDefault,
   ImageBackground,
   SpaceBetween,
+  SafeArea,
 } from "../../components/Views";
 import HeaderMenu from "../../components/HeaderMenu";
 import NumberInfo from "../../components/NumberInfo";
@@ -36,7 +37,7 @@ const Profile = () => {
           <Text style={styles.profileName}>Juliandro R. Ribeiro</Text>
         </SpaceBetween>
 
-        <SafeAreaView style={styles.listRegisters}>
+        <SafeArea style={styles.listRegisters}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Register
               source={default_register_image}
@@ -71,7 +72,7 @@ const Profile = () => {
               }}
             />
           </ScrollView>
-        </SafeAreaView>
+        </SafeArea>
       </ImageBackground>
     </PageDefault>
   );

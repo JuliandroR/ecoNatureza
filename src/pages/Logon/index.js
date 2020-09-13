@@ -11,11 +11,13 @@ import {
   PageDefault,
   ImageBackground,
   ContainerOpacity,
+  SafeArea,
 } from "../../components/Views";
 import { BackButton, Button } from "../../components/Buttons";
 import Input from "../../components/Input";
 import { DataPicker } from "../../components/DataPicker";
 import Checkbox from "../../components/Checkbox";
+import { ScrollView } from "react-native";
 
 const Logon = () => {
   const navigation = useNavigation();
@@ -34,45 +36,52 @@ const Logon = () => {
             }}
             name={"ios-arrow-back"}
           />
-          <Input
-            value={name}
-            onChange={(e) => {
-              setName(e);
-            }}
-            placeholder={"Digite seu Nome"}
-            isPassword={false}
-          />
+          <SafeArea>
+            <ScrollView>
+              <Input
+                value={name}
+                onChange={(e) => {
+                  setName(e);
+                }}
+                placeholder={"Digite seu Nome"}
+                isPassword={false}
+              />
 
-          <DataPicker
-            onChange={(value) => {
-              setBornDate(value);
-            }}
-            value={bornDate}
-          />
+              <DataPicker
+                onChange={(value) => {
+                  setBornDate(value);
+                }}
+                value={bornDate}
+                placeholder="Data de Nascimento"
+              />
 
-          <Input
-            value={email}
-            onChage={(e) => {
-              setEmail(e);
-            }}
-            placeholder={"Digite seu e-mail"}
-            isPassword={false}
-          />
+              <Input
+                value={email}
+                onChage={(e) => {
+                  setEmail(e);
+                }}
+                placeholder={"Digite seu e-mail"}
+                isPassword={false}
+              />
 
-          <Input
-            value={pass}
-            onChage={(e) => {setPass(e)}}
-            placeholder={"Digite sua senha"}
-            isPassword={true}
-          />
+              <Input
+                value={pass}
+                onChage={(e) => {
+                  setPass(e);
+                }}
+                placeholder={"Digite sua senha"}
+                isPassword={true}
+              />
 
-          <Checkbox
-            text="Aluno do IFMS?"
-            value={student}
-            onValueChange={setStudent}
-          />
+              <Checkbox
+                text="Aluno do IFMS?"
+                value={student}
+                onValueChange={setStudent}
+              />
 
-          <Button onPress={() => {}} color={"#885500"} text="Entrar" />
+              <Button onPress={() => {}} color={"#885500"} text="Entrar" />
+            </ScrollView>
+          </SafeArea>
         </ContainerOpacity>
       </ImageBackground>
     </PageDefault>

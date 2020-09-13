@@ -7,7 +7,8 @@ import Login from "./pages/Login";
 import Logon from "./pages/Logon";
 import Profile from "./pages/Profile";
 import ViewRegister from "./pages/ViewRegister";
-
+import ViewMap from "./pages/ViewMap";
+import NewRegister from "./pages/NewRegister";
 
 import ExploreTabs from "./Navigations/ExploreTabs";
 
@@ -23,6 +24,8 @@ export default function Routes() {
         <AppStack.Screen name="Explore" component={ExploreTabs} />
         <AppStack.Screen name="Profile" component={Profile} />
         <AppStack.Screen name="ViewRegister" component={ViewRegister} />
+        <AppStack.Screen name="MapView" component={ViewMap} />
+        <AppStack.Screen name="NewRegister" component={NewRegister} />
       </AppStack.Navigator>
     </NavigationContainer>
   );

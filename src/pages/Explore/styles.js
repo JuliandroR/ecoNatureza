@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     },
 
     buttonOption: {
-        width: "90%",
+        width: PixelRatio.getPixelSizeForLayoutSize(150),
         height: PixelRatio.getPixelSizeForLayoutSize(70),
         borderRadius: 10,
         borderColor: "#885500",

@@ -25,6 +25,7 @@ const Input = (props) => {
       onChange={props.onChange}
       secureTextEntry={props.isPassword}
       style={style.input}
+      
     />
   );
 };

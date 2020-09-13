@@ -12,6 +12,7 @@ import {
   PageDefault,
   ImageBackground,
   SpaceBetween,
+  SafeArea,
 } from "../../components/Views";
 import { AntDesign, SimpleLineIcons, Feather } from "@expo/vector-icons";
 
@@ -21,6 +22,7 @@ import {
   ButtonDrop,
   NumberDrop,
 } from "../../components/Register/styles";
+import HeaderBack from "../../components/HeaderBack";
 
 const explore_background = require("../../assets/img/explore_background.png");
 
@@ -30,17 +32,9 @@ const ViewRegister = ({ navigation, route }) => {
   return (
     <PageDefault>
       <ImageBackground source={explore_background}>
-        <SpaceBetween>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <AntDesign name="arrowleft" size={35} color="#885500" />
-          </TouchableOpacity>
-        </SpaceBetween>
+        <HeaderBack title="" />
 
-        <SafeAreaView style={styles.scroll}>
+        <SafeArea>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.content}>
               <Image
@@ -97,7 +91,7 @@ const ViewRegister = ({ navigation, route }) => {
               </ContainerButtons>
             </View>
           </ScrollView>
-        </SafeAreaView>
+        </SafeArea>
       </ImageBackground>
     </PageDefault>
   );

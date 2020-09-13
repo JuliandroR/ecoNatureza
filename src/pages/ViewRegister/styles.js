@@ -1,11 +1,6 @@
 import { StyleSheet, PixelRatio } from "react-native";
 
 export const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    paddingTop: 30,
-  },
-
   content: {
     justifyContent: "center",
     alignItems: "center",
