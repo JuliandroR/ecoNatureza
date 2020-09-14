@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native";
 
 export const PageDefault = styled.View`
   flex: 1;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   background-color: #f7f7f7;
 `;
@@ -38,5 +38,5 @@ export const SpaceBetween = styled.View`
 
 export const SafeArea = styled.SafeAreaView`
   flex: 1;
-  padding-top: 20;
+  padding-top: 20px;
 `;

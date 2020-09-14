@@ -11,6 +11,7 @@ import ViewMap from "./pages/ViewMap";
 import NewRegister from "./pages/NewRegister";
 
 import ExploreTabs from "./Navigations/ExploreTabs";
+import ProfileTabs from "./Navigations/ProfileTabs";
 
 const AppStack = createStackNavigator();
 
@@ -22,7 +23,7 @@ export default function Routes() {
         <AppStack.Screen name="Login" component={Login} />
         <AppStack.Screen name="Logon" component={Logon} />
         <AppStack.Screen name="Explore" component={ExploreTabs} />
-        <AppStack.Screen name="Profile" component={Profile} />
+        <AppStack.Screen name="Profile" component={ProfileTabs} />
         <AppStack.Screen name="ViewRegister" component={ViewRegister} />
         <AppStack.Screen name="MapView" component={ViewMap} />
         <AppStack.Screen name="NewRegister" component={NewRegister} />

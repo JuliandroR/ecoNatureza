@@ -19,7 +19,7 @@ const Explore = () => {
         <View style={styles.containerHeader}>
           <View style={styles.container}>
             <Image style={styles.logo} source={logo_image} />
-            <TitleApp />
+            <TitleApp title="Eco Cerrado" />
             <TouchableOpacity onPress={() => {}}>
               <Entypo name="menu" size={40} color="#885500" />
             </TouchableOpacity>

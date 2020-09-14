@@ -12,11 +12,7 @@ const HeaderMenu = () => {
   return (
     <SpaceBetween>
       <TitleApp title="Eco Cerrado" />
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("NewRegister");
-        }}
-      >
+      <TouchableOpacity onPress={() => {}}>
         <Feather name="menu" size={40} color="#885500" />
       </TouchableOpacity>
     </SpaceBetween>

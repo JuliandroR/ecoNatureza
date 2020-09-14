@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Image, Text, SafeAreaView, ScrollView } from "react-native";
+import { Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 import {
   PageDefault,
   ImageBackground,
@@ -35,6 +36,14 @@ const Profile = () => {
 
         <SpaceBetween>
           <Text style={styles.profileName}>Juliandro R. Ribeiro</Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("NewRegister");
+            }}
+          >
+            <AntDesign name="pluscircleo" size={35} color="#885500" />
+          </TouchableOpacity>
         </SpaceBetween>
 
         <SafeArea style={styles.listRegisters}>
@@ -46,7 +55,9 @@ const Profile = () => {
               dropFunction={() => {}}
               numberLikes="99"
               viewFunction={() => {
-                navigation.navigate("ViewRegister", {image: default_register_image})
+                navigation.navigate("ViewRegister", {
+                  image: default_register_image,
+                });
               }}
             />
 
@@ -57,7 +68,9 @@ const Profile = () => {
               dropFunction={() => {}}
               numberLikes="99"
               viewFunction={() => {
-                navigation.navigate("ViewRegister", {image: default_register_image_2})
+                navigation.navigate("ViewRegister", {
+                  image: default_register_image_2,
+                });
               }}
             />
 
@@ -68,7 +81,9 @@ const Profile = () => {
               dropFunction={() => {}}
               numberLikes="99"
               viewFunction={() => {
-                navigation.navigate("ViewRegister", {image: default_register_image_3})
+                navigation.navigate("ViewRegister", {
+                  image: default_register_image_3,
+                });
               }}
             />
           </ScrollView>

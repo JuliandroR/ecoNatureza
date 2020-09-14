@@ -9,14 +9,14 @@ import {
 
 import Explore from "../../pages/Explore";
 import ViewMap from "../../pages/ViewMap";
-import GoToLogin from "../../pages/GoToLogin";
+import Profile from "../../pages/Profile";
 
-const ExploreTabStack = createBottomTabNavigator();
+const ProfileTabStack = createBottomTabNavigator();
 
-export default function ExploreTabs() {
+export default function ProfileTabs() {
   return (
-    <ExploreTabStack.Navigator>
-      <ExploreTabStack.Screen
+    <ProfileTabStack.Navigator>
+      <ProfileTabStack.Screen
         name="Explore"
         component={Explore}
         options={{
@@ -27,7 +27,7 @@ export default function ExploreTabs() {
         }}
       />
 
-      <ExploreTabStack.Screen
+      <ProfileTabStack.Screen
         name="ViewMap"
         component={ViewMap}
         options={{
@@ -42,9 +42,9 @@ export default function ExploreTabs() {
         }}
       />
 
-      <ExploreTabStack.Screen
-        name="GoToLogin"
-        component={GoToLogin}
+      <ProfileTabStack.Screen
+        name="Profile"
+        component={Profile}
         options={{
           tabBarLabel: "Perfil",
           tabBarIcon: ({ color, size }) => (
@@ -52,6 +52,6 @@ export default function ExploreTabs() {
           ),
         }}
       />
-    </ExploreTabStack.Navigator>
+    </ProfileTabStack.Navigator>
   );
 }
