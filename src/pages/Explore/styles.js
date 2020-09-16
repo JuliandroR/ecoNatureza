@@ -7,20 +7,6 @@ export const styles = StyleSheet.create({
         alignItems: "center",
     },
 
-    container: {
-        width: "90%",
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 20,
-    },
-
-    logo: {
-        width: 60,
-        height: 60,
-    },
-
     buttonOption: {
         width: PixelRatio.getPixelSizeForLayoutSize(150),
         height: PixelRatio.getPixelSizeForLayoutSize(70),

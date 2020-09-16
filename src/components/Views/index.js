@@ -34,6 +34,7 @@ export const SpaceBetween = styled.View`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
+  margin-bottom: 30px;
 `;
 
 export const SafeArea = styled.SafeAreaView`

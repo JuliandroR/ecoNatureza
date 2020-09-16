@@ -12,6 +12,7 @@ import NewRegister from "./pages/NewRegister";
 
 import ExploreTabs from "./Navigations/ExploreTabs";
 import ProfileTabs from "./Navigations/ProfileTabs";
+import ListSpecies from "./pages/ListSpecies";
 
 const AppStack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export default function Routes() {
         <AppStack.Screen name="ViewRegister" component={ViewRegister} />
         <AppStack.Screen name="MapView" component={ViewMap} />
         <AppStack.Screen name="NewRegister" component={NewRegister} />
+        <AppStack.Screen name="ListSpecies" component={ListSpecies} />
       </AppStack.Navigator>
     </NavigationContainer>
   );
