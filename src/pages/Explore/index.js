@@ -35,7 +35,9 @@ const Explore = ({ navigation }) => {
 
         <SafeArea>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate("ListProjects")
+            }} style={styles.buttonOption}>
               <ImageBackground
                 style={styles.imageButton}
                 source={projects_background}
