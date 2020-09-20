@@ -6,6 +6,7 @@ import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native";
 
 import { styles } from "./styles";
 import { Entypo } from "@expo/vector-icons";
+import TitleApp from "../../components/TitleApp";
 
 const default_image = require("../../assets/background_image.jpg");
 
@@ -19,6 +20,7 @@ const ListSpecies = () => {
         <NumberInfo title="colaboradores" value="99" />
         <NumberInfo title="projetos" value="99" />
       </SpaceBetween>
+      <TitleApp title="Lista de Espécies" />
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.scroll}>

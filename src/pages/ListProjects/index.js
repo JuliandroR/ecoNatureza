@@ -6,6 +6,7 @@ import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 import { styles } from "./styles";
+import TitleApp from "../../components/TitleApp";
 
 const background_card = require("../../assets/img/project_card_background.png");
 
@@ -19,6 +20,7 @@ const ListProjects = () => {
         <NumberInfo title="colaboradores" value="99" />
         <NumberInfo title="projetos" value="99" />
       </SpaceBetween>
+      <TitleApp title="Lista de Projetos" />
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.container}>

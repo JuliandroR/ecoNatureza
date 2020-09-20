@@ -57,7 +57,9 @@ const Explore = ({ navigation }) => {
               </ImageBackground>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {}} style={styles.buttonOption}>
+            <TouchableOpacity onPress={() => {
+              navigation.navigate("ListCommunity")
+            }} style={styles.buttonOption}>
               <ImageBackground
                 style={styles.imageButton}
                 source={comunidade_background}
