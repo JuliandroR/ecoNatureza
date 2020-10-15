@@ -13,6 +13,7 @@ import NumberInfo from "../../components/NumberInfo";
 
 import { styles } from "./styles";
 import Register from "../../components/Register";
+import findDataUser from "../../data/Firebase";
 
 const explore_background = require("../../assets/img/explore_background.png");
 
@@ -23,6 +24,7 @@ const default_register_image_3 = require("../../assets/background_image_3.jpg");
 
 const Profile = () => {
   const navigation = useNavigation();
+  console.log(findDataUser())
   return (
     <PageDefault>
       <ImageBackground source={explore_background}>

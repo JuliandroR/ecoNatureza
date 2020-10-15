@@ -18,14 +18,15 @@ import Input from "../../components/Input";
 import { DataPicker } from "../../components/DataPicker";
 import Checkbox from "../../components/Checkbox";
 import { ScrollView } from "react-native";
+import { signInMethod } from "../../data/Firebase";
 
 const Logon = () => {
   const navigation = useNavigation();
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [bornDate, setBornDate] = useState();
-  const [email, setEmail] = useState();
-  const [pass, setPass] = useState();
-  const [student, setStudent] = useState();
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [student, setStudent] = useState(false);
   return (
     <PageDefault>
       <ImageBackground source={logon_background}>
@@ -57,7 +58,7 @@ const Logon = () => {
 
               <Input
                 value={email}
-                onChage={(e) => {
+                onChange={(e) => {
                   setEmail(e);
                 }}
                 placeholder={"Digite seu e-mail"}
@@ -66,7 +67,7 @@ const Logon = () => {
 
               <Input
                 value={pass}
-                onChage={(e) => {
+                onChange={(e) => {
                   setPass(e);
                 }}
                 placeholder={"Digite sua senha"}
@@ -79,7 +80,9 @@ const Logon = () => {
                 onValueChange={setStudent}
               />
 
-              <Button onPress={() => {}} color={"#885500"} text="Entrar" />
+              <Button onPress={() => {
+                signInMethod(navigation, name, bornDate, email, pass, student)
+              }} color={"#885500"} text="Entrar" />
             </ScrollView>
           </SafeArea>
         </ContainerOpacity>

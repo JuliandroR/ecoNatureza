@@ -11,6 +11,7 @@ import {
 import Logo from "../../components/Logo";
 import { BackButton, Button, FlatButton } from "../../components/Buttons";
 import Input from "../../components/Input";
+import { loginMethod } from "../../data/Firebase";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -30,21 +31,31 @@ const Login = () => {
           />
           <Input
             value={email}
-            onChange={(e) => {setEmail(e)}}
+            onChange={(e) => {
+              setEmail(e);
+            }}
             placeholder={"Digite seu E-mail"}
             isPassword={false}
+            type="email"
           />
 
           <Input
             value={pass}
-            onChange={(e) => {setPass(e)}}
+            onChange={(e) => {
+              setPass(e);
+            }}
             placeholder={"Digite sua Senha"}
             isPassword={true}
+            type="password"
           />
 
-          <Button onPress={() => {
-            navigation.navigate("Profile");
-          }} color={"#885500"} text="Entrar" />
+          <Button
+            onPress={() => {
+              loginMethod(navigation, email, pass)
+            }}
+            color={"#885500"}
+            text="Entrar"
+          />
 
           <FlatButton
             onPress={() => {
