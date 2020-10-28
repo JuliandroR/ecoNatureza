@@ -2,20 +2,7 @@ import React from "react";
 import firebase from "firebase";
 import "firebase/firestore";
 import { AlertMessage } from "../../components/Alert";
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCyKCowsXTxEkGex1X9_QBBangxeh_PRUI",
-  authDomain: "ecocerradoapp-ae5da.firebaseapp.com",
-  databaseURL: "https://ecocerradoapp-ae5da.firebaseio.com",
-  projectId: "ecocerradoapp-ae5da",
-  storageBucket: "ecocerradoapp-ae5da.appspot.com",
-  messagingSenderId: "254220840823",
-  appId: "1:254220840823:web:02f0309cb38659d7ecfb72",
-  measurementId: "G-1EWLYYK1V1",
-};
-
-firebase.initializeApp(firebaseConfig);
+import { AsyncStorage } from "react-native";
 
 export const loginMethod = (navigation, email, pass) => {
   firebase
@@ -57,10 +44,12 @@ export const signInMethod = (
         name: name,
         bornDate: bornDate,
         student: student,
+        registers: 0,
+        likes: 0,
       };
-      const usersRef = firebase.firestore().collection("tbl_usuarios");
-      await usersRef
-        .doc(uid)
+      await firebase
+        .database()
+        .ref(`/tbl_usuarios/${uid}`)
         .set(data)
         .then(() => {
           loginMethod(navigation, email, password);
@@ -79,26 +68,3 @@ export const signInMethod = (
       }
     });
 };
-
-export const findDataUser = () => {
-  const user = firebase.auth().currentUser;
-  const userData = firebase
-    .firestore()
-    .collection("tbl_usuarios")
-    .doc(`${user.uid}`);
-
-  userData
-    .get()
-    .then(function (doc) {
-      if (doc.exists) {
-        return doc.data();
-      } else {
-        // doc.data() will be undefined in this case
-        AlertMessage("Erro", "Ocorreu um erro ao buscar os dados")
-      }
-    })
-    .catch(function (error) {
-      console.log("Error getting document:", error);
-    });
-    return {}
-}

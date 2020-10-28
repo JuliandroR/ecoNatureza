@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, PixelRatio } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
+import { Picker } from "@react-native-community/picker";
 
 const Select = (props) => {
   const pickerSelectStyles = StyleSheet.create({
@@ -27,19 +28,34 @@ const Select = (props) => {
     },
   });
 
+  const options = props.options || {}
+  let elements = options.map((option, index) => {
+    return <Picker.Item label={option.label} value={option.value} key={index} />
+  })
+
   return (
-    <RNPickerSelect
-      placeholder={{
-        label: `${props.placeholder}`,
-        value: null,
-        color: "#885500",
-      }}
-      placeholderColor="#885500"
-      onValueChange={(value) => console.log(value)}
-      items={props.options}
-      useNativeAndroidPickerStyle={false}
+    // <RNPickerSelect
+    //   placeholder={{
+    //     label: `${props.placeholder}`,
+    //     value: null,
+    //     color: "#885500",
+    //   }}
+    //   placeholderColor="#885500"
+    //   onValueChange={props.onChange}
+    //   items={props.options}
+    //   useNativeAndroidPickerStyle={false}
+    //   style={pickerSelectStyles}
+    //   value={props.value}
+    // />
+    <Picker
+      selectedValue={props.value}
       style={pickerSelectStyles}
-    />
+      onValueChange={props.onChange}
+    >
+      {
+        elements
+      }
+    </Picker>
   );
 };
 

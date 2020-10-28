@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 1,
     marginBottom: 25,
+    paddingTop: 25,
     paddingLeft: 25,
     paddingRight: 25,
     borderRadius: 50,

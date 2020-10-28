@@ -24,7 +24,7 @@ const TextArea = (props) => {
       placeholder={props.placeholder}
       placeholderTextColor="rgba(136, 85, 0, 0.5)"
       value={props.value}
-      onChange={props.onChange}
+      onChangeText={props.onChange}
       style={styles.textArea}
     />
   );

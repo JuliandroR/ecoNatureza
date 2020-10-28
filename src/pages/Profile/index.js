@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import firebase from "firebase";
+import "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -13,8 +15,7 @@ import NumberInfo from "../../components/NumberInfo";
 
 import { styles } from "./styles";
 import Register from "../../components/Register";
-import findDataUser from "../../data/Firebase";
-
+import { startFirebase } from "../../data/Firebase";
 const explore_background = require("../../assets/img/explore_background.png");
 
 const default_profile_photo = require("../../assets/default_profile_photo.png");
@@ -24,7 +25,25 @@ const default_register_image_3 = require("../../assets/background_image_3.jpg");
 
 const Profile = () => {
   const navigation = useNavigation();
-  console.log(findDataUser())
+  const [data, setData] = useState({});
+  useEffect(() => {
+    getDataUser()
+  }, []);
+
+  async function getDataUser() {
+    const uid = firebase.auth().currentUser;
+    await firebase
+      .database()
+      .ref("/tbl_usuarios")
+      .on("value", (snapshot) => {
+        snapshot.val().forEach((user) => {
+          if (user.id == uid) {
+            setData(user);
+          }
+        });
+      });
+  }
+
   return (
     <PageDefault>
       <ImageBackground source={explore_background}>
@@ -32,12 +51,12 @@ const Profile = () => {
 
         <SpaceBetween>
           <Image source={default_profile_photo} style={styles.profilePhoto} />
-          <NumberInfo title="registros" value="99" />
-          <NumberInfo title="curtidas" value="99" />
+          <NumberInfo title="registros" value={data.registers} />
+          <NumberInfo title="curtidas" value={data.likes} />
         </SpaceBetween>
 
         <SpaceBetween>
-          <Text style={styles.profileName}>Juliandro R. Ribeiro</Text>
+          <Text style={styles.profileName}>{data.name}</Text>
 
           <TouchableOpacity
             onPress={() => {

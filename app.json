@@ -25,7 +25,12 @@
     "description": "V-1",
     "githubUrl": "https://github.com/juliandror/econatureza",
     "android": {
-      "package": "com.juliandrorocha.ecocerrado"
+      "package": "com.juliandrorocha.ecocerrado",
+      "permissions": [
+        "CAMERA",
+        "CAMERA_ROLL",
+        "LOCATION"
+      ]
     }
   }
 }
