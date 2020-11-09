@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import { PageDefault, SpaceBetween, SafeArea } from "../../components/Views";
-
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { styles } from "./styles";
+
+import { PageDefault, SpaceBetween, SafeArea } from "../../components/Views";
 import HeaderBack from "../../components/HeaderBack";
 import TextArea from "../../components/TextArea";
 import Select from "../../components/Select";
@@ -17,11 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import firebase from "firebase";
 
-import Scripts from "./scripts";
-import { AlertMessage } from "../../components/Alert";
-
-const default_register_image_2 = require("../../assets/background_image_2.jpg");
-
+const userLog = firebase.auth().currentUser;
 const NewRegister = () => {
   useEffect(() => {
     (async () => {
@@ -107,14 +103,62 @@ const NewRegister = () => {
 
   async function getImageCameraRoll() {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult.uri);
     setImage(pickerResult.uri);
   }
 
   async function getImageCamera() {
     let pickerResult = await ImagePicker.launchCameraAsync();
-    console.log(pickerResult.uri);
     setImage(pickerResult.uri);
+  }
+
+  async function uploadPhoto(uri) {
+    const path = `photos/${userLog.uid}-${Date.now()}.jpg`;
+    const response = await fetch(uri);
+    const file = await response.blob();
+
+    let upload = firebase.storage().ref(path).put(file);
+
+    upload.on(
+      "state_changed",
+      (snapshot) => {},
+      (err) => {
+        console.log(err);
+      },
+      async () => {
+        const url = await upload.snapshot.ref.getDownloadURL();
+        setImageUrl(url);
+      }
+    );
+  }
+
+  async function sendDataProject() {
+    await uploadPhoto(image);
+
+    let data = {
+      user_id: userLog.uid,
+      especie_cod: specie,
+      data_registro: registerDate,
+      project_name: project,
+      location: {
+        latitude: latitude,
+        longitude: longitude,
+      },
+      descricao: keep,
+      image_url: imageUrl,
+      likes: 0,
+    };
+
+    await firebase
+      .database()
+      .ref(`/tbl_projetos/${userLog.uid}-${Date.now()}`)
+      .set(data)
+      .then(() => {
+        alert("Cadastrado");
+        navigation.navigate("ProfileTabs")
+      })
+      .catch((error) => {
+        console.warn(`Erro cod: ${error.code}`);
+      });
   }
 
   const navigation = useNavigation();
@@ -127,30 +171,10 @@ const NewRegister = () => {
   const [keep, setKeep] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("../../assets/background_image_2.jpg");
 
   getLocation();
-
-  function sendData() {
-    let projects = ["community", project];
-    Scripts.shared
-      .newRegister({
-        specie,
-        registerDate,
-        latitude,
-        longitude,
-        projects,
-        keep,
-        image,
-      })
-      .then((ref) => {
-        AlertMessage("Sucesso", "Registro Adicionado com sucesso!");
-        navigation.goBack();
-      })
-      .catch((error) => {
-        AlertMessage("Erro", `${error}`);
-      });
-  }
 
   return (
     <PageDefault style={{ paddingTop: 50 }}>
@@ -246,7 +270,11 @@ const NewRegister = () => {
             }}
           />
 
-          <Button onPress={sendData()} color="#885500" text="Cadastrar" />
+          <Button
+            onPress={() => {sendDataProject()}}
+            color="#885500"
+            text="Cadastrar"
+          />
         </ScrollView>
       </SafeArea>
     </PageDefault>

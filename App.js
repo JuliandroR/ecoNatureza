@@ -16,8 +16,8 @@ const firebaseConfig = {
   measurementId: "G-1EWLYYK1V1",
 };
 
+firebase.initializeApp(firebaseConfig);
 if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig);
 }
 
 YellowBox.ignoreWarnings(['Setting a timer for a long period of time'])
