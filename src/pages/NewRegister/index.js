@@ -19,7 +19,6 @@ import firebase from "firebase";
 
 import Scripts from "./scripts";
 import { AlertMessage } from "../../components/Alert";
-import { forSlideLeft } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/HeaderStyleInterpolators";
 
 const default_register_image_2 = require("../../assets/background_image_2.jpg");
 
@@ -108,7 +107,14 @@ const NewRegister = () => {
 
   async function getImageCameraRoll() {
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    console.log(pickerResult);
+    console.log(pickerResult.uri);
+    setImage(pickerResult.uri);
+  }
+
+  async function getImageCamera() {
+    let pickerResult = await ImagePicker.launchCameraAsync();
+    console.log(pickerResult.uri);
+    setImage(pickerResult.uri);
   }
 
   const navigation = useNavigation();
@@ -121,9 +127,7 @@ const NewRegister = () => {
   const [keep, setKeep] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-  const [image, setImage] = useState(
-    require("../../assets/background_image_2.jpg")
-  );
+  const [image, setImage] = useState("../../assets/background_image_2.jpg");
 
   getLocation();
 
@@ -152,8 +156,12 @@ const NewRegister = () => {
     <PageDefault style={{ paddingTop: 50 }}>
       <HeaderBack title="Novo Registro" />
       <SpaceBetween>
-        <Image source={image} style={styles.image} />
-        <TouchableOpacity onPress={() => {}}>
+        <Image source={{ uri: image }} style={styles.image} />
+        <TouchableOpacity
+          onPress={() => {
+            getImageCamera();
+          }}
+        >
           <Entypo name="camera" size={30} color="#885500" />
         </TouchableOpacity>
 
