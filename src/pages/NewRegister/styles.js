@@ -23,6 +23,15 @@ export const styles = StyleSheet.create({
   },
 
   text: {
-    color:"#885500"
+    color:"#885500",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+
+  subtext: {
+    color:"#885500",
+    fontSize: 14,
+    marginBottom: 10,
   },
 });

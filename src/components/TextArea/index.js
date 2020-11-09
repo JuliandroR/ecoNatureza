@@ -4,7 +4,7 @@ import { TextInput, StyleSheet, PixelRatio, View } from "react-native";
 const styles = StyleSheet.create({
   textArea: {
     width: PixelRatio.getPixelSizeForLayoutSize(130),
-    height: PixelRatio.getPixelSizeForLayoutSize(80),
+    height: PixelRatio.getPixelSizeForLayoutSize(60),
     backgroundColor: "#f7f7f7",
     borderRadius: 30,
     borderColor: "rgba(136, 85, 0, 0.5)",

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
-import "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { Image, Text, ScrollView, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -15,7 +14,6 @@ import NumberInfo from "../../components/NumberInfo";
 
 import { styles } from "./styles";
 import Register from "../../components/Register";
-import { startFirebase } from "../../data/Firebase";
 const explore_background = require("../../assets/img/explore_background.png");
 
 const default_profile_photo = require("../../assets/default_profile_photo.png");
@@ -31,16 +29,12 @@ const Profile = () => {
   }, []);
 
   async function getDataUser() {
-    const uid = firebase.auth().currentUser;
+    const userLog = firebase.auth().currentUser;
     await firebase
       .database()
-      .ref("/tbl_usuarios")
-      .on("value", (snapshot) => {
-        snapshot.val().forEach((user) => {
-          if (user.id == uid) {
-            setData(user);
-          }
-        });
+      .ref(`/tbl_usuarios/${userLog.uid}`)
+      .once("value", async (snapshot) => {
+        setData(snapshot.val())
       });
   }
 

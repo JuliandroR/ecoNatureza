@@ -2,10 +2,6 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 const logon_background = require("../../assets/img/logon_background.png");
-const options = [
-  { label: "Sim", value: "sim" },
-  { label: "Não", value: "não" },
-];
 
 import {
   PageDefault,

@@ -12,7 +12,8 @@ export const ImageBackground = styled.ImageBackground`
   padding-top: 75px;
   flex: 1;
   width: 100%;
-  justify-content: space-evenly;
+  height: 100%;
+  justify-content: space-around;
   align-items: center;
 `;
 

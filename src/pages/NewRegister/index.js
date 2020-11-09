@@ -10,89 +10,135 @@ import TextArea from "../../components/TextArea";
 import Select from "../../components/Select";
 import { DataPicker } from "../../components/DataPicker";
 import { Button } from "../../components/Buttons";
+import Input from "../../components/Input";
 
-import Contants from "expo-constants";
-import * as Permissions from "expo-permissions";
+import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
 
 import firebase from "firebase";
-import "firebase/firestore";
-import database from "firebase/database";
 
 import Scripts from "./scripts";
 import { AlertMessage } from "../../components/Alert";
+import { forSlideLeft } from "@react-navigation/stack/lib/typescript/src/TransitionConfigs/HeaderStyleInterpolators";
 
 const default_register_image_2 = require("../../assets/background_image_2.jpg");
 
 const NewRegister = () => {
   useEffect(() => {
-    getProjects();
-    setSpecieList(getSpecies());
-    // console.warn(getSpecies());
-  }, []);
+    (async () => {
+      await getProjects();
+      await getSpecies();
+      await getPermissionCamera();
+      await getPermissionRollCamera();
+      await getPermissionLocation();
+    })();
+  }, [specieList, projectList]);
+
+  async function getPermissionLocation() {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permissão de Localização não concedida");
+    }
+  }
+
+  async function getPermissionCamera() {
+    let { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permissão de Câmera não concedida");
+    }
+  }
+
+  async function getPermissionRollCamera() {
+    let {
+      status,
+    } = await ImagePicker.ImagePicker.getCameraRollPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permissão de Rolo da Câmera não concedida");
+    }
+  }
 
   async function getSpecies() {
-    let dataSpecies = {};
+    let dataSpecies = [];
+    let array = [{ label: "Selecione uma Espécie", value: null }];
+
     await firebase
       .database()
-      .ref("tbl_especies")
+      .ref("/tbl_especies")
       .once("value", async (snapshot) => {
-        await snapshot.val().forEach((specie) => {
-          dataSpecies.push({
-            label: specie.speciesname,
-            value: specie.speciesname,
-          });
+        snapshot.forEach((child) => {
+          dataSpecies.push(child);
         });
       });
-    // console.warn(dataSpecies)
-    return dataSpecies;
+    dataSpecies.forEach((specie) => {
+      array.push({
+        label: specie.val().scientificname,
+        value: specie.val().cod_especies,
+      });
+    });
+    setSpecieList(array);
   }
 
   async function getProjects() {
-    let data = {};
+    let dataProjects = [];
+    let arrayProjects = [{ label: "Selecione um projeto", value: null }];
 
     await firebase
       .database()
       .ref("/tbl_projetos")
-      .on("value", (snapshot) => {
-        snapshot.val().forEach((index, project) => {
-          data.push({
-            label: project.nomeprojeto,
-            value: index,
-          });
+      .once("value", async (snapshot) => {
+        snapshot.forEach((child) => {
+          dataProjects.push(child);
         });
       });
+    dataProjects.forEach((element) => {
+      arrayProjects.push({
+        label: element.val().nomeprojeto,
+        value: element.val().nomeprojeto,
+      });
+    });
+    setProjectList(arrayProjects);
+  }
 
-    return data;
+  async function getLocation() {
+    let location = await Location.getCurrentPositionAsync({});
+    setLatitude(location.coords.latitude);
+    setLongitude(location.coords.longitude);
+    // setLocation(location);
+  }
+
+  async function getImageCameraRoll() {
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+    console.log(pickerResult);
   }
 
   const navigation = useNavigation();
 
+  const [specieList, setSpecieList] = useState(null);
+  const [projectList, setProjectList] = useState(null);
   const [specie, setSpecie] = useState("");
   const [registerDate, setRegisterDate] = useState();
-  const [location, setLocation] = useState(null);
   const [project, setProject] = useState("");
   const [keep, setKeep] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   const [image, setImage] = useState(
     require("../../assets/background_image_2.jpg")
   );
-  const [specieList, setSpecieList] = useState({});
-  const defaultList = [
-    { label: "Selecione um Projeto", value: null },
-    { label: "Lorem", value: "Ipsum" },
-    { label: "Lorem", value: "Ipsum" },
-  ];
 
-  const defaultList2 = [
-    { label: "Selecione uma Espécie", value: null },
-    { label: "Lorem", value: "Ipsum" },
-    { label: "Lorem", value: "Ipsum" },
-  ];
+  getLocation();
 
   function sendData() {
-    const projects = ["community", project];
+    let projects = ["community", project];
     Scripts.shared
-      .newRegister({ specie, registerDate, location, projects, keep, image })
+      .newRegister({
+        specie,
+        registerDate,
+        latitude,
+        longitude,
+        projects,
+        keep,
+        image,
+      })
       .then((ref) => {
         AlertMessage("Sucesso", "Registro Adicionado com sucesso!");
         navigation.goBack();
@@ -103,7 +149,7 @@ const NewRegister = () => {
   }
 
   return (
-    <PageDefault style={{ paddingTop: 75 }}>
+    <PageDefault style={{ paddingTop: 50 }}>
       <HeaderBack title="Novo Registro" />
       <SpaceBetween>
         <Image source={image} style={styles.image} />
@@ -111,22 +157,30 @@ const NewRegister = () => {
           <Entypo name="camera" size={30} color="#885500" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            getImageCameraRoll();
+          }}
+        >
           <Ionicons name="md-photos" size={30} color="#885500" />
         </TouchableOpacity>
       </SpaceBetween>
 
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Select
-            placeholder="Selecione a espécie"
-            options={defaultList2}
-            value={specie}
-            onChange={(e) => {
-              setSpecie(e);
-            }}
-          />
+          <Text style={styles.text}>Selecione um Espécie</Text>
+          {specieList && (
+            <Select
+              placeholder="Selecione a espécie"
+              options={specieList}
+              value={specie}
+              onChange={(e) => {
+                setSpecie(e);
+              }}
+            />
+          )}
 
+          <Text style={styles.text}>Informe a data do registro</Text>
           <DataPicker
             onChange={(value) => {
               setRegisterDate(value);
@@ -135,22 +189,47 @@ const NewRegister = () => {
             placeholder="Data do Registro"
           />
 
-          <TouchableOpacity style={styles.location} onPress={() => {}}>
-            <SpaceBetween>
-              <FontAwesome name="map-marker" size={36} color="#885500" />
-              <Text style={styles.text}>Localização</Text>
-            </SpaceBetween>
-          </TouchableOpacity>
+          <Text style={styles.text}>Localização</Text>
+          {latitude && (
+            <>
+              <Text style={styles.subtext}>Informe a latitude</Text>
+              <Input
+                value={latitude}
+                onChange={(e) => {
+                  setLatitude(e);
+                }}
+                placeholder={`Atual ${latitude}`}
+                isPassword={false}
+              />
+            </>
+          )}
 
-          <Select
-            placeholder="Vincular ao Projeto"
-            options={defaultList}
-            value={project}
-            onChange={(e) => {
-              setProject(e);
-            }}
-          />
+          {latitude && (
+            <>
+              <Text style={styles.subtext}>Informe a longitude</Text>
+              <Input
+                value={longitude}
+                onChange={(e) => {
+                  setLatitude(e);
+                }}
+                placeholder={`Atual ${longitude}`}
+                isPassword={false}
+              />
+            </>
+          )}
 
+          <Text style={styles.text}>Selecione um projeto</Text>
+          {projectList && (
+            <Select
+              placeholder="Vincular ao Projeto"
+              options={projectList}
+              value={project}
+              onChange={(e) => {
+                setProject(e);
+              }}
+            />
+          )}
+          <Text style={styles.text}>Descreva</Text>
           <TextArea
             placeholder="Digite as observações constatadas"
             value={keep}

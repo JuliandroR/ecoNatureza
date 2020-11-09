@@ -22,7 +22,8 @@ class Scripts {
   newRegister = async ({
     especie,
     date,
-    location,
+    latitude,
+    longitude,
     project,
     keeps,
     localUri,
@@ -34,10 +35,13 @@ class Scripts {
         .firestore()
         .collection("tbl_posts")
         .add({
-          user_id: user,
+          user_id: user.uid,
           especie,
           date,
-          location,
+          location: {
+            latitude,
+            longitude,
+          },
           project,
           keeps,
           image: remoteUri,

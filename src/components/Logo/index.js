@@ -9,7 +9,7 @@ const Logo = (props) => {
     image: {
       width: PixelRatio.getPixelSizeForLayoutSize(size_value),
       height: PixelRatio.getPixelSizeForLayoutSize(size_value),
-      marginBottom: 30,
+      marginBottom: 10,
     }
   });
   return <Image source={logo} style={style.image} />;

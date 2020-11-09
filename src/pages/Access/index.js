@@ -13,7 +13,7 @@ import { View, StyleSheet, PixelRatio } from "react-native";
 
 const styles = StyleSheet.create({
   ContainerOpacity: {
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(60)
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(20)
   },
 })
 
@@ -22,7 +22,7 @@ const Access = () => {
   return (
     <PageDefault>
       <ImageBackground source={access_background}>
-        <Logo size={110} />
+        <Logo size={100} />
         <ContainerOpacity style={styles.ContainerOpacity}>
           <View>
             <Button

@@ -21,7 +21,7 @@ const Login = () => {
   return (
     <PageDefault>
       <ImageBackground source={login_background}>
-        <Logo size={100} />
+        <Logo size={90} />
         <ContainerOpacity>
           <BackButton
             onPress={() => {
