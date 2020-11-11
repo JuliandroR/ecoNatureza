@@ -20,7 +20,7 @@ export const ImageBackground = styled.ImageBackground`
 export const ContainerOpacity = styled.View`
   width: 100%;
   flex: 1;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-top: 50px;
   align-items: center;
   background-color: rgba(247, 247, 247, 0.5);

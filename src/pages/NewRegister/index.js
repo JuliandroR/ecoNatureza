@@ -17,10 +17,10 @@ import * as ImagePicker from "expo-image-picker";
 
 import firebase from "firebase";
 
-const userLog = firebase.auth().currentUser;
 const NewRegister = () => {
   useEffect(() => {
     (async () => {
+      setUserLog(await firebase.auth().currentUser);
       await getProjects();
       await getSpecies();
       await getPermissionCamera();
@@ -112,7 +112,7 @@ const NewRegister = () => {
   }
 
   async function uploadPhoto(uri) {
-    const path = `photos/${userLog.uid}-${Date.now()}.jpg`;
+    const path = `photos/${Date.now()}.jpg`;
     const response = await fetch(uri);
     const file = await response.blob();
 
@@ -133,6 +133,7 @@ const NewRegister = () => {
 
   async function sendDataProject() {
     await uploadPhoto(image);
+    // console.warn(userLog.uid)
 
     let data = {
       user_id: userLog.uid,
@@ -150,19 +151,33 @@ const NewRegister = () => {
 
     await firebase
       .database()
-      .ref(`/tbl_projetos/${userLog.uid}-${Date.now()}`)
+      .ref(`/tbl_registros/${Date.now()}`)
       .set(data)
-      .then(() => {
+      .then(async () => {
+        await updateNumRegisters()
         alert("Cadastrado");
-        navigation.navigate("ProfileTabs")
+        navigation.navigate("Profile");
       })
       .catch((error) => {
-        console.warn(`Erro cod: ${error.code}`);
+        console.warn(`Erro cod1: ${error.code}`);
       });
+  }
+
+  async function updateNumRegisters() {
+    await firebase
+      .database()
+      .ref(`/tbl_usuarios/${userLog.uid}`)
+      .once("value", async (snapshot) => {
+        setData(snapshot.val());
+      });
+    firebase.database.ref(`/tbl_usuarios/${userLog.uid}`).child("likes").update({
+      likes: (data.likes + 1)
+    });
   }
 
   const navigation = useNavigation();
 
+  const [userLog, setUserLog] = useState(null);
   const [specieList, setSpecieList] = useState(null);
   const [projectList, setProjectList] = useState(null);
   const [specie, setSpecie] = useState("");
@@ -271,7 +286,9 @@ const NewRegister = () => {
           />
 
           <Button
-            onPress={() => {sendDataProject()}}
+            onPress={() => {
+              sendDataProject();
+            }}
             color="#885500"
             text="Cadastrar"
           />
