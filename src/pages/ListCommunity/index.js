@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, FlatList } from "react-native";
 import { PageDefault, SpaceBetween, SafeArea } from "../../components/Views";
 import HeaderMenu from "../../components/HeaderMenu";
 import NumberInfo from "../../components/NumberInfo";
@@ -9,47 +9,38 @@ import Register from "../../components/Register";
 import TitleApp from "../../components/TitleApp";
 
 import firebase from "firebase";
-
+import ContainerInfo from "../../components/ContainerInfo";
 const default_register_image = require("../../assets/background_image.jpg");
 
 const ListCommunity = () => {
   useEffect(() => {
     (async () => {
-      await getNumberInfo();
+      await getListCommunity();
     })();
   });
 
-  async function getNumberInfo() {
-    let data = [];
-    await firebase
-      .database()
-      .ref(`/tbl_registros`)
-      .once("value", async (snapshot) => {
-        data.push(snapshot.numChildren());
-      });
+  async function getSpecie(specie_cod) {
+    let dataSpecies = [];
+    let array;
 
     await firebase
       .database()
-      .ref(`/tbl_especies`)
+      .ref("/tbl_especies")
       .once("value", async (snapshot) => {
-        data.push(snapshot.numChildren());
+        snapshot.forEach((child) => {
+          dataSpecies.push(child);
+        });
       });
-
-    await firebase
-      .database()
-      .ref(`/tbl_colaboradores`)
-      .once("value", async (snapshot) => {
-        data.push(snapshot.numChildren());
-      });
-
-    await firebase
-      .database()
-      .ref(`/tbl_projetos`)
-      .once("value", async (snapshot) => {
-        data.push(snapshot.numChildren());
-      });
-
-    setNumberInfo(data);
+    dataSpecies.forEach((specie) => {
+      if (specie_cod === specie.cod_especies) {
+        array = {
+          name: specie.speciesname,
+          scientific_name: specie.scientificname,
+        };
+      }
+    });
+    console.warn(array);
+    return array;
   }
 
   async function getListCommunity() {
@@ -70,33 +61,40 @@ const ListCommunity = () => {
     setCommunityRegisters(data);
   }
 
-  const [numberInfo, setNumberInfo] = useState(null);
+  async function renderRegister(register) {
+    let data_specie = getSpecie(register.especie_cod);
+    return (
+      <Register
+        source={register.image_url}
+        title={data_specie.name}
+        scientificName={data_specie.scientific_name}
+        dropFunction={() => {}}
+        numberLikes={register.likes}
+        viewFunction={() => {
+          navigation.navigate("ViewRegister", {
+            image: register,
+          });
+        }}
+      />
+    );
+  }
+
   const [communityRegisters, setCommunityRegisters] = useState();
+  getListCommunity()
 
   return (
     <PageDefault style={{ paddingTop: 75 }}>
-      <HeaderMenu />
-      <SpaceBetween>
-        <NumberInfo title="registros" value={numberInfo[0]} />
-        <NumberInfo title="espécies" value={numberInfo[1]} />
-        <NumberInfo title="colaboradores" value={numberInfo[2]} />
-        <NumberInfo title="projetos" value={numberInfo[3]} />
-      </SpaceBetween>
+      <HeaderMenu viewBack={true} />
+      <ContainerInfo />
       <TitleApp title="Registros da Comunidade" />
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Register
-            source={default_register_image}
-            title="Árvore Bonitinha"
-            scientificName="Harbores Bhonitas"
-            dropFunction={() => {}}
-            numberLikes="99"
-            viewFunction={() => {
-              navigation.navigate("ViewRegister", {
-                image: default_register_image,
-              });
-            }}
-          />
+          {communityRegisters != null && (
+            <FlatList
+              data={communityRegisters}
+              renderItem={({ register }) => renderRegister(register)}
+            />
+          )}
         </ScrollView>
       </SafeArea>
     </PageDefault>

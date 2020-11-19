@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather, MaterialIcons, Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 
 import TitleApp from "../TitleApp";
@@ -8,7 +8,7 @@ import TitleApp from "../TitleApp";
 import { useNavigation } from "@react-navigation/native";
 import { SpaceBetween } from "../Views";
 
-const HeaderMenu = () => {
+const HeaderMenu = (props) => {
   useEffect(() => {
     (async () => {
       const userLog = await firebase.auth().currentUser;
@@ -21,6 +21,15 @@ const HeaderMenu = () => {
   const [view, setView] = useState(false);
   return (
     <SpaceBetween>
+      {props.viewBack && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Ionicons name="ios-arrow-back" size={36} color="#885500" />
+        </TouchableOpacity>
+      )}
       <TitleApp title="Eco Cerrado" />
       {view && (
         <TouchableOpacity

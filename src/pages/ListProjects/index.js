@@ -7,19 +7,15 @@ import { Entypo } from "@expo/vector-icons";
 
 import { styles } from "./styles";
 import TitleApp from "../../components/TitleApp";
+import ContainerInfo from "../../components/ContainerInfo";
 
 const background_card = require("../../assets/img/project_card_background.png");
 
 const ListProjects = () => {
   return (
     <PageDefault style={{ paddingTop: 75 }}>
-      <HeaderMenu />
-      <SpaceBetween>
-        <NumberInfo title="registros" value="99" />
-        <NumberInfo title="espécies" value="99" />
-        <NumberInfo title="colaboradores" value="99" />
-        <NumberInfo title="projetos" value="99" />
-      </SpaceBetween>
+      <HeaderMenu viewBack={true} />
+      <ContainerInfo />
       <TitleApp title="Lista de Projetos" />
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>

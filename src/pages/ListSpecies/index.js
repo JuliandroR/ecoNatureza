@@ -7,19 +7,15 @@ import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import { Entypo } from "@expo/vector-icons";
 import TitleApp from "../../components/TitleApp";
+import ContainerInfo from "../../components/ContainerInfo";
 
 const default_image = require("../../assets/background_image.jpg");
 
 const ListSpecies = () => {
   return (
     <PageDefault style={{ paddingTop: 75 }}>
-      <HeaderMenu />
-      <SpaceBetween>
-        <NumberInfo title="registros" value="99" />
-        <NumberInfo title="espécies" value="99" />
-        <NumberInfo title="colaboradores" value="99" />
-        <NumberInfo title="projetos" value="99" />
-      </SpaceBetween>
+      <HeaderMenu viewBack={true} />
+      <ContainerInfo />
       <TitleApp title="Lista de Espécies" />
       <SafeArea>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -62,8 +58,6 @@ const ListSpecies = () => {
                 />
               </TouchableOpacity>
             </View>
-
-            
           </View>
         </ScrollView>
       </SafeArea>

@@ -11,6 +11,7 @@ import { styles } from "./styles";
 import NumberInfo from "../../components/NumberInfo";
 import TitleApp from "../../components/TitleApp";
 import HeaderMenu from "../../components/HeaderMenu";
+import ContainerInfo from "../../components/ContainerInfo";
 
 const explore_background = require("../../assets/img/explore_background.png");
 const logo_image = require("../../assets/img/logo.png");
@@ -23,21 +24,18 @@ const Explore = ({ navigation }) => {
     <PageDefault>
       <ImageBackground source={explore_background}>
         <View style={styles.containerHeader}>
-          <HeaderMenu />
-
-          <SpaceBetween>
-            <NumberInfo title="registros" value="99" />
-            <NumberInfo title="espécies" value="99" />
-            <NumberInfo title="colaboradores" value="99" />
-            <NumberInfo title="projetos" value="99" />
-          </SpaceBetween>
+          <HeaderMenu viewBack={false} />
+          <ContainerInfo />
         </View>
 
         <SafeArea>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("ListProjects")
-            }} style={styles.buttonOption}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ListProjects");
+              }}
+              style={styles.buttonOption}
+            >
               <ImageBackground
                 style={styles.imageButton}
                 source={projects_background}
@@ -46,9 +44,12 @@ const Explore = ({ navigation }) => {
               </ImageBackground>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("ListSpecies")
-            }} style={styles.buttonOption}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ListSpecies");
+              }}
+              style={styles.buttonOption}
+            >
               <ImageBackground
                 style={styles.imageButton}
                 source={especies_background}
@@ -57,9 +58,12 @@ const Explore = ({ navigation }) => {
               </ImageBackground>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => {
-              navigation.navigate("ListCommunity")
-            }} style={styles.buttonOption}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("ListCommunity");
+              }}
+              style={styles.buttonOption}
+            >
               <ImageBackground
                 style={styles.imageButton}
                 source={comunidade_background}
