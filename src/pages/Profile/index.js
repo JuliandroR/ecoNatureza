@@ -63,7 +63,7 @@ const Profile = () => {
 
         <SafeArea style={styles.listRegisters}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Register
+            {/* <Register
               source={default_register_image}
               title="Árvore Bonitinha"
               scientificName="Harbores Bhonitas"
@@ -100,7 +100,7 @@ const Profile = () => {
                   image: default_register_image_3,
                 });
               }}
-            />
+            /> */}
           </ScrollView>
         </SafeArea>
       </ImageBackground>

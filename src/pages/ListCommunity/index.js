@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, ScrollView, FlatList } from "react-native";
-import { PageDefault, SpaceBetween, SafeArea } from "../../components/Views";
+import { View, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { PageDefault, SafeArea } from "../../components/Views";
 import HeaderMenu from "../../components/HeaderMenu";
-import NumberInfo from "../../components/NumberInfo";
-
-import { styles } from "./styles";
 import Register from "../../components/Register";
 import TitleApp from "../../components/TitleApp";
+import ContainerInfo from "../../components/ContainerInfo";
 
 import firebase from "firebase";
-import ContainerInfo from "../../components/ContainerInfo";
 const default_register_image = require("../../assets/background_image.jpg");
 
 const ListCommunity = () => {
@@ -19,28 +16,8 @@ const ListCommunity = () => {
     })();
   });
 
-  async function getSpecie(specie_cod) {
-    let dataSpecies = [];
-    let array;
-
-    await firebase
-      .database()
-      .ref("/tbl_especies")
-      .once("value", async (snapshot) => {
-        snapshot.forEach((child) => {
-          dataSpecies.push(child);
-        });
-      });
-    dataSpecies.forEach((specie) => {
-      if (specie_cod === specie.cod_especies) {
-        array = {
-          name: specie.speciesname,
-          scientific_name: specie.scientificname,
-        };
-      }
-    });
-    console.warn(array);
-    return array;
+  if (loading) {
+    return <ActivityIndicator />;
   }
 
   async function getListCommunity() {
@@ -49,38 +26,27 @@ const ListCommunity = () => {
 
     await firebase
       .database()
-      .ref("/tbl_especies")
+      .ref("/tbl_registros")
       .once("value", async (snapshot) => {
         snapshot.forEach((child) => {
           dataRegisters.push(child);
         });
       });
-    dataRegisters.forEach((register) => {
-      data.push(register.val());
+    dataRegisters.forEach(function (register, index) {
+      data.push({
+        ...register.val(),
+        key: `${index}`,
+      });
     });
     setCommunityRegisters(data);
+    setLoading(false);
+    setVisible(true);
   }
 
-  async function renderRegister(register) {
-    let data_specie = getSpecie(register.especie_cod);
-    return (
-      <Register
-        source={register.image_url}
-        title={data_specie.name}
-        scientificName={data_specie.scientific_name}
-        dropFunction={() => {}}
-        numberLikes={register.likes}
-        viewFunction={() => {
-          navigation.navigate("ViewRegister", {
-            image: register,
-          });
-        }}
-      />
-    );
-  }
-
-  const [communityRegisters, setCommunityRegisters] = useState();
-  getListCommunity()
+  const [communityRegisters, setCommunityRegisters] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  // console.log(communityRegisters);
 
   return (
     <PageDefault style={{ paddingTop: 75 }}>
@@ -88,14 +54,26 @@ const ListCommunity = () => {
       <ContainerInfo />
       <TitleApp title="Registros da Comunidade" />
       <SafeArea>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {communityRegisters != null && (
-            <FlatList
-              data={communityRegisters}
-              renderItem={({ register }) => renderRegister(register)}
-            />
-          )}
-        </ScrollView>
+        {visible && (
+          <FlatList
+            data={communityRegisters}
+            keyExtractor={(register) => register.key}
+            renderItem={(register) =>
+              <Register
+                source={register.item.image_url}
+                title={register.item.specieName}
+                scientificName={register.item.scientificName}
+                dropFunction={() => {}}
+                numberLikes={register.item.likes}
+                viewFunction={() => {
+                  navigation.navigate("ViewRegister", {
+                    image: register.item,
+                  });
+                }}
+              />
+            }
+          />
+        )}
       </SafeArea>
     </PageDefault>
   );

@@ -17,7 +17,7 @@ import { TouchableOpacity } from "react-native";
 const Register = (props) => {
   return (
     <Container key={props.key}>
-      <ImageRegister source={props.source} />
+      <ImageRegister source={{ uri: props.source }} />
       <ContainerInfos>
         <Title>{props.title}</Title>
 

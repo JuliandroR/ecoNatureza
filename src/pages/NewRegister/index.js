@@ -131,13 +131,38 @@ const NewRegister = () => {
     );
   }
 
+  async function getSpecie(specie_cod) {
+    // console.warn(specie_cod);
+    let dataSpecies = [];
+    let array = [];
+
+    await firebase
+      .database()
+      .ref("/tbl_especies")
+      .once("value", async (snapshot) => {
+        snapshot.forEach((child) => {
+          dataSpecies.push(child);
+        });
+      });
+    dataSpecies.forEach((specie) => {
+      if (specie_cod == specie.val().cod_especies) {
+        array.push(specie.val().speciesname);
+        array.push(specie.val().scientificname);
+      }
+    });
+    // console.warn(array);
+    return array;
+  }
+
   async function sendDataProject() {
     await uploadPhoto(image);
     // console.warn(userLog.uid)
+    const specieData = await getSpecie(specie);
 
     let data = {
       user_id: userLog.uid,
-      especie_cod: specie,
+      specieName: specieData[0],
+      scientificName: specieData[1],
       data_registro: registerDate,
       project_name: project,
       location: {
@@ -154,7 +179,7 @@ const NewRegister = () => {
       .ref(`/tbl_registros/${Date.now()}`)
       .set(data)
       .then(async () => {
-        await updateNumRegisters()
+        // await updateNumRegisters();
         alert("Cadastrado");
         navigation.navigate("Profile");
       })
@@ -164,15 +189,12 @@ const NewRegister = () => {
   }
 
   async function updateNumRegisters() {
-    await firebase
-      .database()
+    firebase.database
       .ref(`/tbl_usuarios/${userLog.uid}`)
-      .once("value", async (snapshot) => {
-        setData(snapshot.val());
+      .child("registers")
+      .update({
+        registers: data.registers + 1,
       });
-    firebase.database.ref(`/tbl_usuarios/${userLog.uid}`).child("likes").update({
-      likes: (data.likes + 1)
-    });
   }
 
   const navigation = useNavigation();
@@ -181,7 +203,7 @@ const NewRegister = () => {
   const [specieList, setSpecieList] = useState(null);
   const [projectList, setProjectList] = useState(null);
   const [specie, setSpecie] = useState("");
-  const [registerDate, setRegisterDate] = useState();
+  const [registerDate, setRegisterDate] = useState(Date.now());
   const [project, setProject] = useState("");
   const [keep, setKeep] = useState("");
   const [latitude, setLatitude] = useState(null);
