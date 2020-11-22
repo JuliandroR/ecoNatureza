@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
+
+import firebase from "firebase";
 
 const access_background = require("../../assets/img/access_background.png");
 import {
@@ -13,11 +15,19 @@ import { View, StyleSheet, PixelRatio } from "react-native";
 
 const styles = StyleSheet.create({
   ContainerOpacity: {
-    marginTop: PixelRatio.getPixelSizeForLayoutSize(20)
+    marginTop: PixelRatio.getPixelSizeForLayoutSize(20),
   },
-})
+});
 
 const Access = () => {
+  useEffect(() => {
+    (async () => {
+      const userLog = await firebase.auth().currentUser;
+      if (userLog != null) {
+        navigation.navigate("Profile");
+      }
+    })();
+  });
   const navigation = useNavigation();
   return (
     <PageDefault>
@@ -32,9 +42,13 @@ const Access = () => {
               }}
               text={"Entrar"}
             />
-            <Button color={"#B0AC3A"} onPress={() => {
-              navigation.navigate("Explore");
-            }} text={"Explorar"} />
+            <Button
+              color={"#B0AC3A"}
+              onPress={() => {
+                navigation.navigate("Explore");
+              }}
+              text={"Explorar"}
+            />
           </View>
           <FlatButton
             onPress={() => {
