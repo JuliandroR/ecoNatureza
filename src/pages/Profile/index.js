@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import firebase from "firebase";
 import { useNavigation } from "@react-navigation/native";
-import { Image, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  Image,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import {
   PageDefault,
@@ -17,26 +23,60 @@ import Register from "../../components/Register";
 const explore_background = require("../../assets/img/explore_background.png");
 
 const default_profile_photo = require("../../assets/default_profile_photo.png");
-const default_register_image = require("../../assets/background_image.jpg");
-const default_register_image_2 = require("../../assets/background_image_2.jpg");
-const default_register_image_3 = require("../../assets/background_image_3.jpg");
 
 const Profile = () => {
-  const navigation = useNavigation();
-  const [data, setData] = useState({});
   useEffect(() => {
-    getDataUser()
-  }, []);
+    (async () => {
+      await setUserId(firebase.auth().currentUser);
+      await getDataUser();
+      await getRegisters();
+    })();
+  });
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   async function getDataUser() {
-    const userLog = firebase.auth().currentUser;
     await firebase
       .database()
-      .ref(`/tbl_usuarios/${userLog.uid}`)
+      .ref(`/tbl_usuarios/${userId.uid}`)
       .once("value", async (snapshot) => {
-        setData(snapshot.val())
+        setData(snapshot.val());
       });
   }
+
+  async function getRegisters() {
+    let dataRegisters = [];
+    let data = [];
+
+    await firebase
+      .database()
+      .ref("/tbl_registros")
+      .once("value", async (snapshot) => {
+        snapshot.forEach((child) => {
+          dataRegisters.push(child);
+        });
+      });
+    dataRegisters.forEach(function (register, index) {
+      if (register.val().user_id == userId.uid) {
+        data.push({
+          ...register.val(),
+          key: `${index}`,
+        });
+      }
+    });
+    setRegistersData(data);
+    setLoading(false);
+    setVisible(true);
+  }
+
+  const navigation = useNavigation();
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [registersData, setRegistersData] = useState(null);
+  const [userId, setUserId] = useState();
 
   return (
     <PageDefault>
@@ -62,46 +102,26 @@ const Profile = () => {
         </SpaceBetween>
 
         <SafeArea style={styles.listRegisters}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            {/* <Register
-              source={default_register_image}
-              title="Árvore Bonitinha"
-              scientificName="Harbores Bhonitas"
-              dropFunction={() => {}}
-              numberLikes="99"
-              viewFunction={() => {
-                navigation.navigate("ViewRegister", {
-                  image: default_register_image,
-                });
-              }}
-            />
-
-            <Register
-              source={default_register_image_2}
-              title="Árvore Bonitinha"
-              scientificName="Harbores Bhonitas"
-              dropFunction={() => {}}
-              numberLikes="99"
-              viewFunction={() => {
-                navigation.navigate("ViewRegister", {
-                  image: default_register_image_2,
-                });
-              }}
-            />
-
-            <Register
-              source={default_register_image_3}
-              title="Árvore Bonitinha"
-              scientificName="Harbores Bhonitas"
-              dropFunction={() => {}}
-              numberLikes="99"
-              viewFunction={() => {
-                navigation.navigate("ViewRegister", {
-                  image: default_register_image_3,
-                });
-              }}
-            /> */}
-          </ScrollView>
+        {visible && (
+          <FlatList
+            data={registersData}
+            keyExtractor={(register) => register.key}
+            renderItem={(register) =>
+              <Register
+                source={register.item.image_url}
+                title={register.item.specieName}
+                scientificName={register.item.scientificName}
+                dropFunction={() => {}}
+                numberLikes={register.item.likes}
+                viewFunction={() => {
+                  navigation.navigate("ViewRegister", {
+                    image: register.item,
+                  });
+                }}
+              />
+            }
+          />
+        )}
         </SafeArea>
       </ImageBackground>
     </PageDefault>
