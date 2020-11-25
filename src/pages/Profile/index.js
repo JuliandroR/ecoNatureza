@@ -115,7 +115,7 @@ const Profile = () => {
                 numberLikes={register.item.likes}
                 viewFunction={() => {
                   navigation.navigate("ViewRegister", {
-                    image: register.item,
+                    data: register.item,
                   });
                 }}
               />

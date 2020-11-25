@@ -29,6 +29,8 @@ const explore_background = require("../../assets/img/explore_background.png");
 const default_register_image = require("../../assets/background_image_2.jpg");
 
 const ViewRegister = ({ navigation, route }) => {
+  const data = route.params?.data;
+  // console.warn(data);
   return (
     <PageDefault>
       <ImageBackground source={explore_background}>
@@ -38,22 +40,17 @@ const ViewRegister = ({ navigation, route }) => {
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.content}>
               <Image
-                source={route.params?.image}
+                source={{uri: data.image_url}}
                 style={styles.image}
                 resizeMode="contain"
               />
 
-              <Text style={styles.title}>Árvore Bonitinha</Text>
-              <Text style={styles.scientificName}>Harbores Bonhitas</Text>
+              <Text style={styles.title}>{data.specieName}</Text>
+              <Text style={styles.scientificName}>{data.scientificName}</Text>
 
               <View style={styles.container}>
                 <Text style={styles.topicTitle}>Descrição da Observação</Text>
-                <Text style={styles.text}>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-                  accusamus minus placeat, nesciunt officiis libero illo aperiam
-                  voluptate et, nam magnam fugiat, cupiditate inventore dolore
-                  culpa quisquam dolor reiciendis dolores?
-                </Text>
+                <Text style={styles.text}>{data.descricao}</Text>
               </View>
 
               <View style={styles.container}>
@@ -70,11 +67,11 @@ const ViewRegister = ({ navigation, route }) => {
                 >
                   <Marker
                     coordinate={{
-                      latitude: -22.1484908,
-                      longitude: -53.4656069,
+                      latitude: data.location.latitude,
+                      longitude: data.location.longitude,
                     }}
-                    title="Árvore Bonitinha"
-                    description="Uma simples árvore"
+                    title={data.specieName}
+                    description={data.scientificName}
                   />
                 </MapView>
               </View>
@@ -82,7 +79,7 @@ const ViewRegister = ({ navigation, route }) => {
               <ContainerButtons style={styles.viewButtons}>
                 <ButtonDrop onPress={() => {}}>
                   <SimpleLineIcons name="drop" size={40} color="#885500" />
-                  <NumberDrop style={styles.numberLike}>99</NumberDrop>
+                  <NumberDrop style={styles.numberLike}>{data.likes}</NumberDrop>
                 </ButtonDrop>
 
                 <TouchableOpacity onPress={() => {}}>

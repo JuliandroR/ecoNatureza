@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, ScrollView, FlatList, ActivityIndicator } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { PageDefault, SafeArea } from "../../components/Views";
 import HeaderMenu from "../../components/HeaderMenu";
 import Register from "../../components/Register";
@@ -10,6 +11,7 @@ import firebase from "firebase";
 const default_register_image = require("../../assets/background_image.jpg");
 
 const ListCommunity = () => {
+  const navigation = useNavigation();
   useEffect(() => {
     (async () => {
       await getListCommunity();
@@ -67,7 +69,7 @@ const ListCommunity = () => {
                 numberLikes={register.item.likes}
                 viewFunction={() => {
                   navigation.navigate("ViewRegister", {
-                    image: register.item,
+                    data: register.item,
                   });
                 }}
               />
