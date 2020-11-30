@@ -26,7 +26,7 @@ const Input = (props) => {
       secureTextEntry={props.isPassword}
       style={style.input}
       autoCapitalize="none"
-      autoCompleteType={props.type}
+      // autoCompleteType={props.type}
       
     />
   );

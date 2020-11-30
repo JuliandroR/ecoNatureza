@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { styles } from "./styles";
 
@@ -18,39 +20,22 @@ import * as ImagePicker from "expo-image-picker";
 import firebase from "firebase";
 
 const NewRegister = () => {
+  // useEffect(() => {
+  //   async () => {
+  //     let { status } = await Location.requestPermissionsAsync();
+  //     if (status !== "granted") {
+  //       alert("Permissão de Localização não concedida");
+  //     }
+  //   };
+  // });
+
   useEffect(() => {
     (async () => {
       setUserLog(await firebase.auth().currentUser);
       await getProjects();
       await getSpecies();
-      await getPermissionCamera();
-      await getPermissionRollCamera();
-      await getPermissionLocation();
     })();
   }, [specieList, projectList]);
-
-  async function getPermissionLocation() {
-    let { status } = await Location.requestPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permissão de Localização não concedida");
-    }
-  }
-
-  async function getPermissionCamera() {
-    let { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permissão de Câmera não concedida");
-    }
-  }
-
-  async function getPermissionRollCamera() {
-    let {
-      status,
-    } = await ImagePicker.ImagePicker.getCameraRollPermissionsAsync();
-    if (status !== "granted") {
-      alert("Permissão de Rolo da Câmera não concedida");
-    }
-  }
 
   async function getSpecies() {
     let dataSpecies = [];
@@ -94,6 +79,30 @@ const NewRegister = () => {
     setProjectList(arrayProjects);
   }
 
+  async function getSpecie(specie_cod) {
+    // console.warn(specie_cod);
+    let dataSpecies = [];
+    let array = [];
+
+    await firebase
+      .database()
+      .ref("/tbl_especies")
+      .once("value", async (snapshot) => {
+        snapshot.forEach((child) => {
+          dataSpecies.push(child);
+        });
+      });
+    dataSpecies.forEach((specie) => {
+      if (specie_cod == specie.val().cod_especies) {
+        array.push(specie.val().speciesname);
+        array.push(specie.val().scientificname);
+      }
+    });
+    // console.warn(array);
+    // return array;
+    setSpecieData(array);
+  }
+
   async function getLocation() {
     let location = await Location.getCurrentPositionAsync({});
     setLatitude(location.coords.latitude);
@@ -102,13 +111,25 @@ const NewRegister = () => {
   }
 
   async function getImageCameraRoll() {
-    let pickerResult = await ImagePicker.launchImageLibraryAsync();
-    setImage(pickerResult.uri);
+    let {
+      status,
+    } = await ImagePicker.ImagePicker.getCameraRollPermissionsAsync();
+    if (status == "granted") {
+      let pickerResult = await ImagePicker.launchImageLibraryAsync();
+      setImage(pickerResult.uri);
+    } else {
+      alert("Sem acesso o galeria!");
+    }
   }
 
   async function getImageCamera() {
-    let pickerResult = await ImagePicker.launchCameraAsync();
-    setImage(pickerResult.uri);
+    let { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status == "granted") {
+      let pickerResult = await ImagePicker.launchCameraAsync();
+      setImage(pickerResult.uri);
+    } else {
+      alert("Sem acesso a câmera!");
+    }
   }
 
   async function uploadPhoto(uri) {
@@ -131,35 +152,33 @@ const NewRegister = () => {
     );
   }
 
-  async function getSpecie(specie_cod) {
-    // console.warn(specie_cod);
-    let dataSpecies = [];
-    let array = [];
+  async function createLikesRegister(id) {
+    let data = {
+      likes: 0,
+      users: [],
+      id_register: id,
+    };
 
     await firebase
       .database()
-      .ref("/tbl_especies")
-      .once("value", async (snapshot) => {
-        snapshot.forEach((child) => {
-          dataSpecies.push(child);
-        });
+      .ref(`/tbl_likes/${id}`)
+      .set(data)
+      .then(async () => {
+        console.log("Criar na tabela likes, sucesso!");
+      })
+      .catch((error) => {
+        console.log("Ocorreu um erro ao criar na tabela likes");
       });
-    dataSpecies.forEach((specie) => {
-      if (specie_cod == specie.val().cod_especies) {
-        array.push(specie.val().speciesname);
-        array.push(specie.val().scientificname);
-      }
-    });
-    // console.warn(array);
-    return array;
   }
 
   async function sendDataProject() {
     await uploadPhoto(image);
     // console.warn(userLog.uid)
-    const specieData = await getSpecie(specie);
+    // const specieData = await getSpecie(specie);
+    const id = Date.now();
 
     let data = {
+      id: id,
       user_id: userLog.uid,
       specieName: specieData[0],
       scientificName: specieData[1],
@@ -171,29 +190,20 @@ const NewRegister = () => {
       },
       descricao: keep,
       image_url: imageUrl,
-      likes: 0,
     };
 
     await firebase
       .database()
-      .ref(`/tbl_registros/${Date.now()}`)
+      .ref(`/tbl_registros/${id}`)
       .set(data)
       .then(async () => {
-        // await updateNumRegisters();
+        console.log("Registro Cadastrado com sucesso");
+        await createLikesRegister(id);
         alert("Cadastrado");
         navigation.navigate("Profile");
       })
       .catch((error) => {
-        console.warn(`Erro cod1: ${error.code}`);
-      });
-  }
-
-  async function updateNumRegisters() {
-    firebase.database
-      .ref(`/tbl_usuarios/${userLog.uid}`)
-      .child("registers")
-      .update({
-        registers: data.registers + 1,
+        console.log("Erro ao cadastrar o registro");
       });
   }
 
@@ -203,13 +213,16 @@ const NewRegister = () => {
   const [specieList, setSpecieList] = useState(null);
   const [projectList, setProjectList] = useState(null);
   const [specie, setSpecie] = useState("");
+  const [specieData, setSpecieData] = useState();
   const [registerDate, setRegisterDate] = useState(Date.now());
   const [project, setProject] = useState("");
   const [keep, setKeep] = useState("");
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [imageUrl, setImageUrl] = useState();
-  const [image, setImage] = useState("../../assets/background_image_2.jpg");
+  const [image, setImage] = useState(
+    "https://firebasestorage.googleapis.com/v0/b/ecocerradoapp-ae5da.appspot.com/o/logo-ecocerrado.jpeg?alt=media&token=a9c359b4-cc97-4154-88eb-0ded050d4db8"
+  );
 
   getLocation();
 
@@ -245,6 +258,7 @@ const NewRegister = () => {
               value={specie}
               onChange={(e) => {
                 setSpecie(e);
+                getSpecie(e);
               }}
             />
           )}
@@ -263,7 +277,7 @@ const NewRegister = () => {
             <>
               <Text style={styles.subtext}>Informe a latitude</Text>
               <Input
-                value={latitude}
+                value={`${latitude}`}
                 onChange={(e) => {
                   setLatitude(e);
                 }}
@@ -273,11 +287,11 @@ const NewRegister = () => {
             </>
           )}
 
-          {latitude && (
+          {longitude && (
             <>
               <Text style={styles.subtext}>Informe a longitude</Text>
               <Input
-                value={longitude}
+                value={`${longitude}`}
                 onChange={(e) => {
                   setLatitude(e);
                 }}

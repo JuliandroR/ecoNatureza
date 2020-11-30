@@ -49,6 +49,7 @@ const Profile = () => {
   async function getRegisters() {
     let dataRegisters = [];
     let data = [];
+    let cont = 0;
 
     await firebase
       .database()
@@ -60,6 +61,7 @@ const Profile = () => {
       });
     dataRegisters.forEach(function (register, index) {
       if (register.val().user_id == userId.uid) {
+        cont += 1;
         data.push({
           ...register.val(),
           key: `${index}`,
@@ -67,6 +69,7 @@ const Profile = () => {
       }
     });
     setRegistersData(data);
+    setNumberRegisters(cont);
     setLoading(false);
     setVisible(true);
   }
@@ -77,6 +80,7 @@ const Profile = () => {
   const [visible, setVisible] = useState(false);
   const [registersData, setRegistersData] = useState(null);
   const [userId, setUserId] = useState();
+  const [numberRegisters, setNumberRegisters] = useState();
 
   return (
     <PageDefault>
@@ -85,7 +89,7 @@ const Profile = () => {
 
         <SpaceBetween>
           <Image source={default_profile_photo} style={styles.profilePhoto} />
-          <NumberInfo title="registros" value={data.registers} />
+          <NumberInfo title="registros" value={numberRegisters} />
           <NumberInfo title="curtidas" value={data.likes} />
         </SpaceBetween>
 
@@ -102,26 +106,27 @@ const Profile = () => {
         </SpaceBetween>
 
         <SafeArea style={styles.listRegisters}>
-        {visible && (
-          <FlatList
-            data={registersData}
-            keyExtractor={(register) => register.key}
-            renderItem={(register) =>
-              <Register
-                source={register.item.image_url}
-                title={register.item.specieName}
-                scientificName={register.item.scientificName}
-                dropFunction={() => {}}
-                numberLikes={register.item.likes}
-                viewFunction={() => {
-                  navigation.navigate("ViewRegister", {
-                    data: register.item,
-                  });
-                }}
-              />
-            }
-          />
-        )}
+          {visible && (
+            <FlatList
+              data={registersData}
+              keyExtractor={(register) => register.key}
+              renderItem={(register) => (
+                <Register
+                  registerID={register.item.id_register}
+                  source={register.item.image_url}
+                  title={register.item.specieName}
+                  scientificName={register.item.scientificName}
+                  dropFunction={() => {}}
+                  numberLikes={register.item.likes}
+                  viewFunction={() => {
+                    navigation.navigate("ViewRegister", {
+                      data: register.item,
+                    });
+                  }}
+                />
+              )}
+            />
+          )}
         </SafeArea>
       </ImageBackground>
     </PageDefault>

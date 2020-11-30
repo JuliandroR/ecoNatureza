@@ -12,7 +12,7 @@ const HeaderMenu = (props) => {
   useEffect(() => {
     (async () => {
       const userLog = await firebase.auth().currentUser;
-      if (userLog != null) {
+      if (userLog != undefined) {
         setView(true);
       }
     })();

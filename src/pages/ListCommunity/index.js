@@ -60,7 +60,7 @@ const ListCommunity = () => {
           <FlatList
             data={communityRegisters}
             keyExtractor={(register) => register.key}
-            renderItem={(register) =>
+            renderItem={(register) => (
               <Register
                 source={register.item.image_url}
                 title={register.item.specieName}
@@ -72,8 +72,9 @@ const ListCommunity = () => {
                     data: register.item,
                   });
                 }}
+                registerID={register.item.id}
               />
-            }
+            )}
           />
         )}
       </SafeArea>
