@@ -5,7 +5,8 @@ import {
   Platform,
   TouchableOpacity,
   StyleSheet,
-  PixelRatio
+  PixelRatio,
+  Text,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Input from "../Input";
@@ -55,13 +56,16 @@ export const DataPicker = (props) => {
     <View>
       <View>
         <TouchableOpacity onPress={showDatepicker}>
-          <TextInput
+          {/* <TextInput
             placeholder={props.placeholder}
             placeholderTextColor="rgba(136, 85, 0, 0.5)"
             value={props.value}
             style={style.input}
             editable={false}
-          />
+          /> */}
+          <View style={style.input}>
+            <Text>{props.value}</Text>
+          </View>
         </TouchableOpacity>
       </View>
       {show && (

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Entypo, Ionicons, FontAwesome } from "@expo/vector-icons";
 import { styles } from "./styles";
@@ -17,29 +16,35 @@ import Input from "../../components/Input";
 import * as Location from "expo-location";
 import * as ImagePicker from "expo-image-picker";
 
+import moment from "moment";
+
 import firebase from "firebase";
 
 const NewRegister = () => {
-  // useEffect(() => {
-  //   async () => {
-  //     let { status } = await Location.requestPermissionsAsync();
-  //     if (status !== "granted") {
-  //       alert("Permissão de Localização não concedida");
-  //     }
-  //   };
-  // });
-
   useEffect(() => {
     (async () => {
       setUserLog(await firebase.auth().currentUser);
       await getProjects();
       await getSpecies();
     })();
-  }, [specieList, projectList]);
+  });
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
 
   async function getSpecies() {
     let dataSpecies = [];
-    let array = [{ label: "Selecione uma Espécie", value: null }];
+    let array = [{ label: "Selecione uma Espécie", value: "null" }];
 
     await firebase
       .database()
@@ -60,7 +65,7 @@ const NewRegister = () => {
 
   async function getProjects() {
     let dataProjects = [];
-    let arrayProjects = [{ label: "Selecione um projeto", value: null }];
+    let arrayProjects = [{ label: "Selecione um projeto", value: "null" }];
 
     await firebase
       .database()
@@ -94,8 +99,8 @@ const NewRegister = () => {
       });
     dataSpecies.forEach((specie) => {
       if (specie_cod == specie.val().cod_especies) {
-        array.push(specie.val().speciesname);
-        array.push(specie.val().scientificname);
+        setSpecieName(specie.val().speciesname);
+        setScientificName(specie.val().scientificname);
       }
     });
     // console.warn(array);
@@ -104,37 +109,55 @@ const NewRegister = () => {
   }
 
   async function getLocation() {
-    let location = await Location.getCurrentPositionAsync({});
-    setLatitude(location.coords.latitude);
-    setLongitude(location.coords.longitude);
-    // setLocation(location);
-  }
-
-  async function getImageCameraRoll() {
-    let {
-      status,
-    } = await ImagePicker.ImagePicker.getCameraRollPermissionsAsync();
+    let { status } = await Location.requestPermissionsAsync();
     if (status == "granted") {
-      let pickerResult = await ImagePicker.launchImageLibraryAsync();
-      setImage(pickerResult.uri);
+      const { status } = await Permissions.getAsync(Permissions.LOCATION);
+      if (status == "granted") {
+        let location = await Location.getCurrentPositionAsync({});
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude);
+        // setLocation(location);
+      }
     } else {
-      alert("Sem acesso o galeria!");
+      alert("Sem acesso a localização");
+      navigation.navigate("Profile");
     }
   }
 
-  async function getImageCamera() {
-    let { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status == "granted") {
-      let pickerResult = await ImagePicker.launchCameraAsync();
-      setImage(pickerResult.uri);
-    } else {
-      alert("Sem acesso a câmera!");
-    }
-  }
+  const getImageCameraRoll = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 1,
+    });
 
-  async function uploadPhoto(uri) {
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  const getImageCamera = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [3, 4],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  async function uploadPhoto() {
+    console.log("Entrou em upload de foto");
     const path = `photos/${Date.now()}.jpg`;
-    const response = await fetch(uri);
+    const response = await fetch(image);
     const file = await response.blob();
 
     let upload = firebase.storage().ref(path).put(file);
@@ -147,13 +170,15 @@ const NewRegister = () => {
       },
       async () => {
         const url = await upload.snapshot.ref.getDownloadURL();
+        console.log(url);
         setImageUrl(url);
       }
     );
   }
 
   async function createLikesRegister(id) {
-    let data = {
+    console.log("Entrou em criar tabela likes");
+    let dataLikes = {
       likes: 0,
       users: [],
       id_register: id,
@@ -162,7 +187,7 @@ const NewRegister = () => {
     await firebase
       .database()
       .ref(`/tbl_likes/${id}`)
-      .set(data)
+      .set(dataLikes)
       .then(async () => {
         console.log("Criar na tabela likes, sucesso!");
       })
@@ -172,16 +197,32 @@ const NewRegister = () => {
   }
 
   async function sendDataProject() {
-    await uploadPhoto(image);
-    // console.warn(userLog.uid)
-    // const specieData = await getSpecie(specie);
+    let dataLikes = {
+      likes: 0,
+      users: [],
+      id_register: id,
+    };
+
+    await firebase
+      .database()
+      .ref(`/tbl_likes/${id}`)
+      .set(dataLikes)
+      .then(() => {
+        console.log("Criar na tabela likes, sucesso!");
+      })
+      .catch((error) => {
+        console.log("Ocorreu um erro ao criar na tabela likes");
+      });
+
+    console.log("Entrou em enviar projeto");
+    await uploadPhoto();
     const id = Date.now();
 
     let data = {
       id: id,
       user_id: userLog.uid,
-      specieName: specieData[0],
-      scientificName: specieData[1],
+      specieName: specieName || "",
+      scientificName: scientificName || "",
       data_registro: registerDate,
       project_name: project,
       location: {
@@ -196,9 +237,9 @@ const NewRegister = () => {
       .database()
       .ref(`/tbl_registros/${id}`)
       .set(data)
-      .then(async () => {
+      .then(() => {
         console.log("Registro Cadastrado com sucesso");
-        await createLikesRegister(id);
+        // await createLikesRegister(id);
         alert("Cadastrado");
         navigation.navigate("Profile");
       })
@@ -212,9 +253,12 @@ const NewRegister = () => {
   const [userLog, setUserLog] = useState(null);
   const [specieList, setSpecieList] = useState(null);
   const [projectList, setProjectList] = useState(null);
-  const [specie, setSpecie] = useState("");
-  const [specieData, setSpecieData] = useState();
-  const [registerDate, setRegisterDate] = useState(Date.now());
+  const [specie, setSpecie] = useState();
+  const [specieName, setSpecieName] = useState();
+  const [scientificName, setScientificName] = useState();
+  const [registerDate, setRegisterDate] = useState(
+    moment().format("DD/MM/YYYY")
+  );
   const [project, setProject] = useState("");
   const [keep, setKeep] = useState("");
   const [latitude, setLatitude] = useState(null);
@@ -223,8 +267,6 @@ const NewRegister = () => {
   const [image, setImage] = useState(
     "https://firebasestorage.googleapis.com/v0/b/ecocerradoapp-ae5da.appspot.com/o/logo-ecocerrado.jpeg?alt=media&token=a9c359b4-cc97-4154-88eb-0ded050d4db8"
   );
-
-  getLocation();
 
   return (
     <PageDefault style={{ paddingTop: 50 }}>
@@ -239,11 +281,7 @@ const NewRegister = () => {
           <Entypo name="camera" size={30} color="#885500" />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            getImageCameraRoll();
-          }}
-        >
+        <TouchableOpacity onPress={getImageCameraRoll}>
           <Ionicons name="md-photos" size={30} color="#885500" />
         </TouchableOpacity>
       </SpaceBetween>
