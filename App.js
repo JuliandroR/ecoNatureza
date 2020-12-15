@@ -21,7 +21,7 @@ import * as Permissions from "expo-permissions";
 // if (firebase.apps.length === 0) {
 // }
 
-LogBox.ignoreAllLogs(['Setting a timer for a long period of time'])
+LogBox.ignoreLogs(['Setting a timer for a long period of time'])
 
 export default function App() {
   useEffect(() => {

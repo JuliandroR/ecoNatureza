@@ -24,6 +24,7 @@ export const DataPicker = (props) => {
       marginBottom: 20,
       paddingLeft: 25,
       color: "rgba(136, 85, 0, 1)",
+      justifyContent: "center",
     },
   });
 

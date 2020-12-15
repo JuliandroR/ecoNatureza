@@ -27,7 +27,7 @@ const default_profile_photo = require("../../assets/default_profile_photo.png");
 const Profile = () => {
   useEffect(() => {
     (async () => {
-      await setUserId(firebase.auth().currentUser);
+      await setUserId(firebase.auth().currentUser || {});
       await getDataUser();
       await getRegisters();
     })();
@@ -38,12 +38,14 @@ const Profile = () => {
   }
 
   async function getDataUser() {
-    await firebase
-      .database()
-      .ref(`/tbl_usuarios/${userId.uid}`)
-      .once("value", async (snapshot) => {
-        setData(snapshot.val());
-      });
+    if (userId != null) {
+      await firebase
+        .database()
+        .ref(`/tbl_usuarios/${userId.uid}`)
+        .once("value", async (snapshot) => {
+          setData(snapshot.val());
+        });
+    }
   }
 
   async function getRegisters() {
